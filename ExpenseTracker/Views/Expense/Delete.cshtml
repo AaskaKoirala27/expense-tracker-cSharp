@@ -1,0 +1,89 @@
+@model ExpenseTracker.Models.Expense
+
+@{
+    ViewData["Title"] = "Delete Expense";
+}
+
+<div class="container mt-5">
+    <h1 class="text-danger">Delete Expense</h1>
+    <hr />
+
+    <div class="alert alert-warning" role="alert">
+        <strong>Warning!</strong> You are about to delete this expense. This action cannot be undone.
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card border-danger">
+                <div class="card-body">
+                    <h5 class="card-title">Are you sure you want to delete this expense?</h5>
+                    
+                    <div class="row mb-3 mt-4">
+                        <div class="col-md-6">
+                            <strong>Description:</strong>
+                            <p>@Html.DisplayFor(model => model.Description)</p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Category:</strong>
+                            <p>
+                                <span class="badge bg-info">@Html.DisplayFor(model => model.Category)</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <strong>Amount:</strong>
+                            <p style="font-size: 1.3rem; color: #dc3545;">
+                                @Html.DisplayFor(model => model.Amount, "{0:C}")
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Date:</strong>
+                            <p>@Html.DisplayFor(model => model.Date, "{0:MMMM dd, yyyy}")</p>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Notes))
+                    {
+                        <div class="mb-3">
+                            <strong>Notes:</strong>
+                            <p>@Html.DisplayFor(model => model.Notes)</p>
+                        </div>
+                    }
+
+                    <div class="mt-4">
+                        <form asp-action="Delete" method="post" style="display:inline;">
+                            <input type="hidden" asp-for="Id" />
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-trash"></i> Yes, Delete This Expense
+                            </button>
+                        </form>
+                        <a href="@Url.Action("Index")" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Cancel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <style>
+        h1 {
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+        
+        .card {
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn {
+            border-radius: 6px;
+            padding: 8px 20px;
+        }
+    </style>
+}
