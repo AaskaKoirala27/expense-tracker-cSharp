@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ExpenseTracker.Data;
 using ExpenseTracker.Models;
+using System.Security.Claims;
 
 namespace ExpenseTracker.Controllers
 {
@@ -9,6 +12,8 @@ namespace ExpenseTracker.Controllers
     /// Controller responsible for handling all expense-related operations.
     /// Implements full CRUD (Create, Read, Update, Delete) functionality for expense management.
     /// </summary>
+    [Authorize(Roles = "User,Admin")]
+    [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class ExpenseController : Controller
     {
         // Database context for accessing and manipulating expense data
@@ -31,8 +36,22 @@ namespace ExpenseTracker.Controllers
         /// <returns>View with a list of all expenses including summary information</returns>
         public async Task<IActionResult> Index()
         {
-            // Retrieve all expenses from the database asynchronously
-            var expenses = await _context.Expenses.ToListAsync();
+            var isAdmin = User.IsInRole("Admin");
+            var userId = GetUserIdFromSessionOrClaims();
+
+            if (!isAdmin && userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var expensesQuery = _context.Expenses.AsNoTracking().AsQueryable();
+
+            if (!isAdmin)
+            {
+                expensesQuery = expensesQuery.Where(e => e.UserId == userId);
+            }
+
+            var expenses = await expensesQuery.ToListAsync();
             return View(expenses);
         }
 
@@ -50,9 +69,25 @@ namespace ExpenseTracker.Controllers
                 return NotFound();
             }
 
-            // Query the database for the expense with the specified ID
-            var expense = await _context.Expenses
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var isAdmin = User.IsInRole("Admin");
+            var userId = GetUserIdFromSessionOrClaims();
+
+            if (!isAdmin && userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var expensesQuery = _context.Expenses
+                .Include(e => e.User)
+                .AsNoTracking()
+                .AsQueryable();
+
+            if (!isAdmin)
+            {
+                expensesQuery = expensesQuery.Where(e => e.UserId == userId);
+            }
+
+            var expense = await expensesQuery.FirstOrDefaultAsync(m => m.Id == id);
             
             // Return NotFound if no matching expense is found
             if (expense == null)
@@ -84,15 +119,39 @@ namespace ExpenseTracker.Controllers
         [ValidateAntiForgeryToken]  // Prevents Cross-Site Request Forgery attacks
         public async Task<IActionResult> Create([Bind("Id,Description,Amount,Category,Date,Notes")] Expense expense)
         {
+            var userId = GetUserIdFromSessionOrClaims();
+            if (userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            expense.UserId = userId;
+            expense.CreatedAt = DateTime.Now;
+
+            // Remove User navigation property from ModelState since we're setting UserId manually
+            ModelState.Remove("User");
+            ModelState.Remove("UserId");
+
             // Check if all validation requirements are met
             if (ModelState.IsValid)
             {
-                // Add the new expense to the context
-                _context.Add(expense);
-                // Save changes to the database asynchronously
-                await _context.SaveChangesAsync();
-                // Redirect to the Index page to show the updated list
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    // Add the new expense to the context
+                    _context.Add(expense);
+                    // Save changes to the database asynchronously
+                    await _context.SaveChangesAsync();
+                    // Set success message
+                    TempData["SuccessMessage"] = $"Expense '{expense.Description}' created successfully!";
+                    // Redirect to the Index page to show the updated list
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException)
+                {
+                    // Handle database errors
+                    ModelState.AddModelError("", "An error occurred while saving the expense. Please try again.");
+                    return View(expense);
+                }
             }
             // If validation failed, return to the form with the entered data and error messages
             return View(expense);
@@ -112,8 +171,25 @@ namespace ExpenseTracker.Controllers
                 return NotFound();
             }
 
-            // Find the expense in the database by ID
-            var expense = await _context.Expenses.FindAsync(id);
+            var isAdmin = User.IsInRole("Admin");
+            var userId = GetUserIdFromSessionOrClaims();
+
+            if (!isAdmin && userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var expensesQuery = _context.Expenses
+                .Include(e => e.User)
+                .AsNoTracking()
+                .AsQueryable();
+
+            if (!isAdmin)
+            {
+                expensesQuery = expensesQuery.Where(e => e.UserId == userId);
+            }
+
+            var expense = await expensesQuery.FirstOrDefaultAsync(e => e.Id == id);
             if (expense == null)
             {
                 return NotFound();
@@ -139,13 +215,42 @@ namespace ExpenseTracker.Controllers
                 return NotFound();
             }
 
+            var isAdmin = User.IsInRole("Admin");
+            var userId = GetUserIdFromSessionOrClaims();
+
+            if (!isAdmin && userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Remove User navigation property from ModelState since we don't bind it
+            ModelState.Remove("User");
+            ModelState.Remove("UserId");
+
             // Check if all validation requirements are met
             if (ModelState.IsValid)
             {
                 try
                 {
-                    // Mark the expense as modified and update in the database
-                    _context.Update(expense);
+                    var existingExpenseQuery = _context.Expenses.AsQueryable();
+
+                    if (!isAdmin)
+                    {
+                        existingExpenseQuery = existingExpenseQuery.Where(e => e.UserId == userId);
+                    }
+
+                    var existingExpense = await existingExpenseQuery.FirstOrDefaultAsync(e => e.Id == id);
+                    if (existingExpense == null)
+                    {
+                        return NotFound();
+                    }
+
+                    existingExpense.Description = expense.Description;
+                    existingExpense.Amount = expense.Amount;
+                    existingExpense.Category = expense.Category;
+                    existingExpense.Date = expense.Date;
+                    existingExpense.Notes = expense.Notes;
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -161,6 +266,14 @@ namespace ExpenseTracker.Controllers
                         throw;
                     }
                 }
+                catch (DbUpdateException)
+                {
+                    // Handle database errors
+                    ModelState.AddModelError("", "An error occurred while updating the expense. Please try again.");
+                    return View(expense);
+                }
+                // Set success message
+                TempData["SuccessMessage"] = $"Expense '{expense.Description}' updated successfully!";
                 // Redirect to the Index page after successful update
                 return RedirectToAction(nameof(Index));
             }
@@ -182,9 +295,25 @@ namespace ExpenseTracker.Controllers
                 return NotFound();
             }
 
-            // Retrieve the expense from the database
-            var expense = await _context.Expenses
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var isAdmin = User.IsInRole("Admin");
+            var userId = GetUserIdFromSessionOrClaims();
+
+            if (!isAdmin && userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var expensesQuery = _context.Expenses
+                .Include(e => e.User)
+                .AsNoTracking()
+                .AsQueryable();
+
+            if (!isAdmin)
+            {
+                expensesQuery = expensesQuery.Where(e => e.UserId == userId);
+            }
+
+            var expense = await expensesQuery.FirstOrDefaultAsync(m => m.Id == id);
             if (expense == null)
             {
                 return NotFound();
@@ -204,14 +333,30 @@ namespace ExpenseTracker.Controllers
         [ValidateAntiForgeryToken]  // Prevents Cross-Site Request Forgery attacks
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            // Find the expense by ID
-            var expense = await _context.Expenses.FindAsync(id);
+            var isAdmin = User.IsInRole("Admin");
+            var userId = GetUserIdFromSessionOrClaims();
+
+            if (!isAdmin && userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var expensesQuery = _context.Expenses.AsQueryable();
+
+            if (!isAdmin)
+            {
+                expensesQuery = expensesQuery.Where(e => e.UserId == userId);
+            }
+
+            var expense = await expensesQuery.FirstOrDefaultAsync(e => e.Id == id);
             if (expense != null)
             {
                 // Remove the expense from the database context
                 _context.Expenses.Remove(expense);
                 // Commit the deletion to the database
                 await _context.SaveChangesAsync();
+                // Set success message
+                TempData["SuccessMessage"] = $"Expense '{expense.Description}' deleted successfully!";
             }
             // Redirect to the Index page to show the updated list
             return RedirectToAction(nameof(Index));
@@ -226,6 +371,24 @@ namespace ExpenseTracker.Controllers
         private bool ExpenseExists(int id)
         {
             return _context.Expenses.Any(e => e.Id == id);
+        }
+
+        private int? GetUserIdFromSessionOrClaims()
+        {
+            var sessionUserId = HttpContext.Session.GetInt32("UserId");
+            if (sessionUserId.HasValue)
+            {
+                return sessionUserId.Value;
+            }
+
+            var userIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (!string.IsNullOrEmpty(userIdClaim) && int.TryParse(userIdClaim, out var userId))
+            {
+                HttpContext.Session.SetInt32("UserId", userId);
+                return userId;
+            }
+
+            return null;
         }
     }
 }

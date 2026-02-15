@@ -1,0 +1,141 @@
+@model IEnumerable<ExpenseTracker.Models.User>
+@{
+    ViewData["Title"] = "Manage Users";
+    var isSuperAdmin = (bool?)ViewBag.IsSuperAdmin ?? false;
+}
+
+<div class="container mt-5">
+    <div class="row align-items-center mb-4">
+        <div class="col">
+            <h1><i class="bi bi-people"></i> Manage Users</h1>
+        </div>
+        <div class="col-auto">
+            @if (isSuperAdmin)
+            {
+                <a asp-action="CreateAdmin" class="btn btn-primary me-2">
+                    <i class="bi bi-shield-plus"></i> Create Admin
+                </a>
+            }
+            <a asp-action="CreateUser" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Add User
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-hover shadow-sm">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Username</th>
+                        <th>Roles</th>
+                        <th>Type</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        var isSuperAdminUser = user.Username == "superadmin";
+                        var isAdminUser = user.UserRoles.Any(ur => ur.Role?.RoleName == "Admin");
+                        <tr @(isSuperAdminUser ? "class=\"table-warning\"" : "")>
+                            <td>
+                                <strong>@user.Username</strong>
+                                @if (isSuperAdminUser)
+                                {
+                                    <span class="badge bg-danger ms-2">SUPERADMIN</span>
+                                }
+                                else if (isAdminUser)
+                                {
+                                    <span class="badge bg-warning text-dark ms-2">ADMIN</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary ms-2">REGULAR</span>
+                                }
+                            </td>
+                            <td>
+                                @if (user.UserRoles.Any())
+                                {
+                                    @foreach (var role in user.UserRoles)
+                                    {
+                                        <span class="badge bg-info me-1">@role.Role?.RoleName</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted">No roles assigned</span>
+                                }
+                            </td>
+                            <td>
+                                @if (isSuperAdminUser)
+                                {
+                                    <span class="badge bg-danger">Superadmin</span>
+                                }
+                                else if (isAdminUser)
+                                {
+                                    <span class="badge bg-warning text-dark">Administrator</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Regular User</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <a asp-action="DetailsUser" asp-route-id="@user.Id" class="btn btn-sm btn-info">
+                                    <i class="bi bi-eye"></i> Details
+                                </a>
+                                @if (isSuperAdmin)
+                                {
+                                    <a asp-action="ManageUserRoles" asp-route-id="@user.Id" class="btn btn-sm btn-secondary">
+                                        <i class="bi bi-shield"></i> Roles
+                                    </a>
+                                }
+                                @if (!isSuperAdminUser)
+                                {
+                                    <a asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-sm btn-warning">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </a>
+                                    <a asp-action="DeleteUser" asp-route-id="@user.Id" class="btn btn-sm btn-danger">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </a>
+                                }
+                                else if (isSuperAdmin)
+                                {
+                                    <a asp-action="EditUser" asp-route-id="@user.Id" class="btn btn-sm btn-warning">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">No Users Found</h4>
+            <p>No users exist yet. Click the button above to add your first user.</p>
+        </div>
+    }
+</div>
+

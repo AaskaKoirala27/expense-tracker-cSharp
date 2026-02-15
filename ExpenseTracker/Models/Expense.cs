@@ -16,6 +16,17 @@ namespace ExpenseTracker.Models
         public int Id { get; set; }
 
         /// <summary>
+        /// Foreign key linking this expense to a user.
+        /// Nullable to keep existing data valid until users are assigned.
+        /// </summary>
+        public int? UserId { get; set; }
+
+        /// <summary>
+        /// Navigation property to the user who owns this expense.
+        /// </summary>
+        public User User { get; set; } = null!;
+
+        /// <summary>
         /// Brief description of the expense (e.g., "Grocery Shopping", "Gas Station").
         /// Must be provided and cannot exceed 100 characters.
         /// </summary>

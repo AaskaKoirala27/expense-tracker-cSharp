@@ -1,0 +1,211 @@
+@model IEnumerable<ExpenseTracker.Models.Role>
+
+@{
+    ViewData["Title"] = "Assign Menus to Roles";
+    var roles = (List<ExpenseTracker.Models.Role>)Model;
+    var allMenus = (List<ExpenseTracker.Models.Menu>)ViewBag.Menus;
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4"><i class="bi bi-link-45deg"></i> Assign Menus to Roles</h1>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill"></i> <strong>Success!</strong> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill"></i> <strong>Error!</strong> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["WarningMessage"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-circle-fill"></i> <strong>Warning!</strong> @TempData["WarningMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-lg-12">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    @foreach (var role in roles)
+                    {
+                        <button class="nav-link @(role.Id == roles.First().Id ? "active" : "")" 
+                                id="nav-role-@role.Id-tab" 
+                                data-bs-toggle="tab" 
+                                data-bs-target="#nav-role-@role.Id" 
+                                type="button" 
+                                role="tab" 
+                                aria-controls="nav-role-@role.Id" 
+                                aria-selected="@(role.Id == roles.First().Id ? "true" : "false")">
+                            <i class="bi bi-person-badge"></i> @role.RoleName
+                        </button>
+                    }
+                </div>
+            </nav>
+
+            <div class="tab-content" id="nav-tabContent">
+                @foreach (var role in roles)
+                {
+                    var userCount = role.UserRoles?.Count ?? 0;
+                    
+                    <div class="tab-pane fade @(role.Id == roles.First().Id ? "show active" : "")" 
+                         id="nav-role-@role.Id" 
+                         role="tabpanel" 
+                         aria-labelledby="nav-role-@role.Id-tab">
+                        
+                        <div class="card shadow-sm mt-3">
+                            <div class="card-header bg-light">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-menu-button-wide"></i> Menus for <strong>@role.RoleName</strong> Role
+                                    <span class="badge bg-info ms-2">@userCount user(s)</span>
+                                </h5>
+                            </div>
+
+                            <div class="card-body">
+                                @if (userCount == 0)
+                                {
+                                    <div class="alert alert-info mb-0">
+                                        <i class="bi bi-info-circle"></i> No users assigned to this role yet.
+                                    </div>
+                                }
+                                else
+                                {
+                                    <form asp-action="UpdateMenuAssignments" method="post">
+                                        <input type="hidden" name="roleId" value="@role.Id" />
+
+                                        <div class="row">
+                                            @foreach (var menu in allMenus)
+                                            {
+                                                <div class="col-md-6 col-lg-4 mb-3">
+                                                    <div class="form-check menu-checkbox-container">
+                                                        <input class="form-check-input menu-checkbox" 
+                                               type="checkbox" 
+                                               name="selectedMenuIds" 
+                                               value="@menu.Id" 
+                                               id="menu-@role.Id-@menu.Id"
+                                               data-role="@role.Id" />
+                                                        <label class="form-check-label" for="menu-@role.Id-@menu.Id">
+                                                            <strong>@menu.Title</strong>
+                                                            <br />
+                                                            <small class="text-muted"><code>@menu.Url</code></small>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+
+                                        <hr />
+
+                                        <div class="d-flex gap-2">
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="bi bi-check-circle"></i> Update Menu Assignments
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary" onclick="selectAllMenus(@role.Id)">
+                                                <i class="bi bi-check-all"></i> Select All
+                                            </button>
+                                            <button type="button" class="btn btn-outline-secondary" onclick="deselectAllMenus(@role.Id)">
+                                                <i class="bi bi-x-circle"></i> Deselect All
+                                            </button>
+                                        </div>
+                                    </form>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Menus" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Menus
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function selectAllMenus(roleId) {
+            const checkboxes = document.querySelectorAll(`input[data-role="${roleId}"]`);
+            checkboxes.forEach(checkbox => checkbox.checked = true);
+        }
+
+        function deselectAllMenus(roleId) {
+            const checkboxes = document.querySelectorAll(`input[data-role="${roleId}"]`);
+            checkboxes.forEach(checkbox => checkbox.checked = false);
+        }
+    </script>
+
+    <style>
+        .nav-tabs .nav-link {
+            color: #6c757d;
+            border: none;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: #007bff;
+            border-bottom-color: #007bff;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: #007bff;
+            border-bottom-color: #007bff;
+            background-color: transparent;
+        }
+
+        .menu-checkbox-container {
+            padding: 12px;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-checkbox-container:hover {
+            background-color: #f8f9fa;
+            border-color: #007bff;
+        }
+
+        .menu-checkbox-container input:checked ~ label {
+            color: #007bff;
+            font-weight: 600;
+        }
+
+        .form-check-label {
+            cursor: pointer;
+            margin-bottom: 0;
+            user-select: none;
+        }
+
+        .card {
+            border: none;
+            border-radius: 8px;
+        }
+
+        .card-header {
+            border-bottom: 2px solid #e9ecef;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .badge {
+            font-weight: 500;
+            padding: 6px 10px;
+        }
+    </style>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

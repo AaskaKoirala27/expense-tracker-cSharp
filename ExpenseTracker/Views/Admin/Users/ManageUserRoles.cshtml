@@ -1,0 +1,256 @@
+@model ExpenseTracker.Models.User
+@{
+    ViewData["Title"] = "Manage User Roles";
+    var isSuperAdmin = (bool?)ViewBag.IsSuperAdmin ?? false;
+    var hasAdminRole = (bool?)ViewBag.CurrentAdminRole ?? false;
+    var allRoles = (List<ExpenseTracker.Models.Role>?)ViewBag.AllRoles ?? new List<ExpenseTracker.Models.Role>();
+    var isSuperAdminUser = Model.Username == "superadmin";
+}
+
+<div class="container mt-5">
+    <div class="row align-items-center mb-4">
+        <div class="col">
+            <h1><i class="bi bi-person-badge"></i> Manage User Roles</h1>
+            <p class="text-muted">Configure roles for @Model.Username</p>
+        </div>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill"></i> <strong>Success!</strong> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill"></i> <strong>Error!</strong> @TempData["ErrorMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["WarningMessage"] != null)
+    {
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-circle-fill"></i> <strong>Warning!</strong> @TempData["WarningMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- User Information Card -->
+            <div class="card shadow-sm mb-4 border-0">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-person"></i> User Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p class="text-muted mb-1">Username</p>
+                            <h6 class="mb-0">
+                                @Model.Username
+                                @if (isSuperAdminUser)
+                                {
+                                    <span class="badge bg-danger ms-2">SUPERADMIN</span>
+                                }
+                            </h6>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="text-muted mb-1">User ID</p>
+                            <h6 class="mb-0">@Model.Id</h6>
+                        </div>
+                    </div>
+
+                    @if (isSuperAdminUser)
+                    {
+                        <div class="alert alert-warning mb-0">
+                            <i class="bi bi-shield-exclamation"></i> <strong>Protected Account</strong><br />
+                            This is the superadmin account. Only you can modify this account's roles.
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Current Roles Card -->
+            <div class="card shadow-sm mb-4 border-0">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="bi bi-shield"></i> Current Roles (@Model.UserRoles.Count)</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.UserRoles.Any())
+                    {
+                        <div class="list-group">
+                            @foreach (var userRole in Model.UserRoles)
+                            {
+                                var roleName = userRole.Role?.RoleName ?? "Unknown";
+                                <div class="list-group-item d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <h6 class="mb-1">
+                                            <i class="bi bi-shield-check"></i> @roleName
+                                        </h6>
+                                        <small class="text-muted">Role ID: @userRole.RoleId</small>
+                                    </div>
+                                    <div>
+                                        @if (roleName == "Admin" && !isSuperAdminUser && isSuperAdmin)
+                                        {
+                                            <form asp-action="RemoveAdminRole" asp-route-id="@Model.Id" method="post" style="display: inline;">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to remove the Admin role from this user?');">
+                                                    <i class="bi bi-trash"></i> Remove
+                                                </button>
+                                            </form>
+                                        }
+                                        else if (isSuperAdminUser && !isSuperAdmin)
+                                        {
+                                            <span class="text-muted small">Protected</span>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">This user has no roles assigned.</p>
+                    }
+                </div>
+            </div>
+
+            <!-- Available Roles Card -->
+            @if (!isSuperAdminUser && isSuperAdmin)
+            {
+                <div class="card shadow-sm mb-4 border-0">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="bi bi-plus-circle"></i> Assign Roles</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (!hasAdminRole)
+                        {
+                            <p class="text-muted">You can assign the following roles to this user:</p>
+                            <form asp-action="AssignAdminRole" asp-route-id="@Model.Id" method="post">
+                                @Html.AntiForgeryToken()
+                                <div class="card border-left-4 border-success mb-3">
+                                    <div class="card-body d-flex align-items-center justify-content-between">
+                                        <div>
+                                            <h6 class="mb-1">
+                                                <i class="bi bi-shield-check"></i> <strong>Admin Role</strong>
+                                            </h6>
+                                            <small class="text-muted">Grants administrative privileges including user and menu management</small>
+                                        </div>
+                                        <button type="submit" class="btn btn-success ms-3">
+                                            <i class="bi bi-plus-circle"></i> Assign Admin
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <div class="alert alert-info mb-0">
+                                <i class="bi bi-info-circle"></i> This user already has the Admin role. Use the "Current Roles" section above to remove it if needed.
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            else if (isSuperAdminUser && !isSuperAdmin)
+            {
+                <div class="alert alert-danger">
+                    <i class="bi bi-lock"></i> <strong>Access Restricted</strong><br />
+                    You cannot modify the superadmin account's roles. Only the superadmin can manage their own roles.
+                </div>
+            }
+        </div>
+
+        <!-- Sidebar Info -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm bg-light border-0">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-lightbulb"></i> About Roles</h5>
+                    <ul class="list-unstyled small">
+                        <li class="mb-3">
+                            <strong>Admin Role:</strong><br />
+                            <span class="text-muted">Allows access to administrative features like user and menu management.</span>
+                        </li>
+                        <li class="mb-3">
+                            <strong>User Role:</strong><br />
+                            <span class="text-muted">Regular user access with basic expense tracking capabilities.</span>
+                        </li>
+                        <li class="mb-2">
+                            <strong>Note:</strong><br />
+                            <span class="text-muted">Only the superadmin can assign or remove admin roles.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card shadow-sm bg-light border-0 mt-3">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-question-circle"></i> Quick Actions</h5>
+                    <div class="d-grid gap-2">
+                        <a asp-action="DetailsUser" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-eye"></i> View Details
+                        </a>
+                        <a asp-action="EditUser" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-warning">
+                            <i class="bi bi-pencil"></i> Edit User
+                        </a>
+                        <a asp-action="Users" class="btn btn-sm btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to Users
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            border-radius: 8px;
+        }
+
+        .card-header {
+            border-radius: 8px 8px 0 0;
+            border-bottom: 2px solid rgba(0,0,0,.125);
+        }
+
+        .list-group-item {
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            padding: 15px;
+        }
+
+        .list-group-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .badge {
+            font-weight: 500;
+            padding: 6px 12px;
+        }
+
+        .border-left-4 {
+            border-left: 4px solid !important;
+        }
+
+        .text-muted {
+            color: #6c757d;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-weight: 600;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        .btn-group-item {
+            gap: 5px;
+        }
+    </style>
+}

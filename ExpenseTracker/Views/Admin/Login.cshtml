@@ -1,0 +1,118 @@
+@model ExpenseTracker.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Superadmin Login";
+}
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-danger text-white text-center py-4">
+                    <i class="bi bi-shield-lock-fill" style="font-size: 3rem;"></i>
+                    <h2 class="mb-0 mt-2">Superadmin Portal</h2>
+                    <p class="mb-0 small">Restricted Access Only</p>
+                </div>
+                <div class="card-body p-5">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+
+                    <form asp-action="Login" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-4">
+                            <label asp-for="Username" class="form-label fw-bold">
+                                <i class="bi bi-person-badge"></i> Superadmin Username
+                            </label>
+                            <input asp-for="Username" 
+                                   class="form-control form-control-lg" 
+                                   placeholder="Enter superadmin username"
+                                   autofocus 
+                                   required />
+                            <span asp-validation-for="Username" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Password" class="form-label fw-bold">
+                                <i class="bi bi-key-fill"></i> Password
+                            </label>
+                            <input asp-for="Password" 
+                                   class="form-control form-control-lg" 
+                                   placeholder="Enter password"
+                                   required />
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger btn-lg">
+                                <i class="bi bi-box-arrow-in-right"></i> Sign In as Superadmin
+                            </button>
+                        </div>
+                    </form>
+
+                    <hr class="my-4">
+
+                    <div class="text-center">
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Regular User Login
+                        </a>
+                    </div>
+
+                    <div class="alert alert-warning mt-4 mb-0" role="alert">
+                        <i class="bi bi-shield-exclamation"></i>
+                        <strong>Security Notice:</strong> This login page is for superadmin access only. 
+                        Regular users and admins should use the standard login page.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+@section Styles {
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+        }
+
+        .form-control:focus {
+            border-color: #dc3545;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            border: none;
+            transition: transform 0.2s;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.4);
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+}

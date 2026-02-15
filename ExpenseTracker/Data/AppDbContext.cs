@@ -26,6 +26,16 @@ namespace ExpenseTracker.Data
         /// </summary>
         public DbSet<Expense> Expenses { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<Role> Roles { get; set; }
+
+        public DbSet<UserRole> UserRoles { get; set; }
+
+        public DbSet<Menu> Menus { get; set; }
+
+        public DbSet<UserMenu> UserMenus { get; set; }
+
         /// <summary>
         /// Configures the database model and relationships using the Fluent API.
         /// This method is called when the model for the context is being created.
@@ -52,6 +62,32 @@ namespace ExpenseTracker.Data
             modelBuilder.Entity<Expense>()
                 .Property(e => e.Amount)
                 .HasPrecision(18, 2);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Expenses)
+                .WithOne(e => e.User)
+                .HasForeignKey(e => e.UserId)
+                .IsRequired(false);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.UserRoles)
+                .WithOne(ur => ur.User)
+                .HasForeignKey(ur => ur.UserId);
+
+            modelBuilder.Entity<Role>()
+                .HasMany(r => r.UserRoles)
+                .WithOne(ur => ur.Role)
+                .HasForeignKey(ur => ur.RoleId);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.UserMenus)
+                .WithOne(um => um.User)
+                .HasForeignKey(um => um.UserId);
+
+            modelBuilder.Entity<Menu>()
+                .HasMany(m => m.UserMenus)
+                .WithOne(um => um.Menu)
+                .HasForeignKey(um => um.MenuId);
         }
     }
 }

@@ -1,0 +1,93 @@
+@model ExpenseTracker.Models.User
+@{
+    ViewData["Title"] = "User Details";
+    var isSuperAdminUser = Model.Username == "superadmin";
+    var isSuperAdmin = User.Identity?.Name == "superadmin";
+}
+
+<div class="container mt-5">
+    <h1>User Details</h1>
+    <hr />
+
+    @if (isSuperAdminUser)
+    {
+        <div class="alert alert-warning" role="alert">
+            <i class="bi bi-shield-exclamation"></i> <strong>This is the Superadmin account.</strong> It cannot be deleted by any user.
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">User Information</h5>
+                    <p><strong>ID:</strong> @Model.Id</p>
+                    <p><strong>Username:</strong> 
+                        @Model.Username
+                        @if (isSuperAdminUser)
+                        {
+                            <span class="badge bg-danger">SUPERADMIN</span>
+                        }
+                    </p>
+                    <p><strong>Account Type:</strong>
+                        @if (isSuperAdminUser)
+                        {
+                            <span class="badge bg-danger">Superadmin</span>
+                        }
+                        else if (Model.UserRoles.Any(ur => ur.Role?.RoleName == "Admin"))
+                        {
+                            <span class="badge bg-warning">Administrator</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Regular User</span>
+                        }
+                    </p>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">Assigned Roles</h5>
+                    @if (Model.UserRoles.Any())
+                    {
+                        <ul class="list-group">
+                            @foreach (var role in Model.UserRoles)
+                            {
+                                <li class="list-group-item">
+                                    <span class="badge bg-info">@role.Role?.RoleName</span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No roles assigned</p>
+                    }
+                </div>
+            </div>
+
+            <div class="mt-3">
+                @if (!isSuperAdminUser)
+                {
+                    <a asp-action="EditUser" asp-route-id="@Model.Id" class="btn btn-warning">
+                        <i class="bi bi-pencil"></i> Edit
+                    </a>
+                    <a asp-action="DeleteUser" asp-route-id="@Model.Id" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Delete
+                    </a>
+                }
+                else if (isSuperAdmin)
+                {
+                    <a asp-action="EditUser" asp-route-id="@Model.Id" class="btn btn-warning">
+                        <i class="bi bi-pencil"></i> Edit
+                    </a>
+                }
+                <a asp-action="Users" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to Users
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
