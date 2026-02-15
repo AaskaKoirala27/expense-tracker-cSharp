@@ -55,27 +55,17 @@
                             </li>
                         }
 
-                        @if (User.IsInRole("Admin"))
+                        <!-- Admin role removed: superadmin handles all admin tasks -->
+                        @if (User.Identity?.Name == "superadmin")
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarAdminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-gear"></i> Admin
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarSuperAdminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-shield-lock"></i> Superadmin
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarAdminDropdown">
-                                    @if (User.Identity?.Name == "superadmin")
-                                    {
-                                        <li><a class="dropdown-item text-danger fw-bold" asp-controller="Admin" asp-action="Index"><i class="bi bi-shield-lock-fill"></i> Admin Portal</a></li>
-                                        <li><hr class="dropdown-divider"></li>
-                                    }
-                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Users">Manage Users</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Menus">Manage Menus</a></li>
-                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="AssignMenus">Manage Roles</a></li>
-                                    @if (User.Identity?.Name == "superadmin")
-                                    {
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li><h6 class="dropdown-header text-danger">Superadmin Only</h6></li>
-                                        <li><a class="dropdown-item" asp-controller="Admin" asp-action="CreateAdmin"><i class="bi bi-person-plus-fill"></i> Create Admin</a></li>
-                                    }
+                                <ul class="dropdown-menu" aria-labelledby="navbarSuperAdminDropdown">
+                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Users"><i class="bi bi-people"></i> Manage Users</a></li>
+                                    <!-- Manage Admins removed: superadmin handles users directly -->
+                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Index"><i class="bi bi-tools"></i> Admin Portal</a></li>
                                 </ul>
                             </li>
                         }

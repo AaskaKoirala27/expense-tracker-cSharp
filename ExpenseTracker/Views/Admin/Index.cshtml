@@ -125,20 +125,7 @@
         </div>
     </div>
 
-    @if (isSuperAdmin)
-    {
-        <div class="row mt-4">
-            <div class="col-12">
-                <div class="alert alert-danger border-start border-5 border-danger" role="alert">
-                    <h5><i class="bi bi-shield-exclamation"></i> Superadmin Actions</h5>
-                    <p class="mb-3">These actions are only available to the superadmin account.</p>
-                    <a asp-action="CreateAdmin" class="btn btn-danger me-2">
-                        <i class="bi bi-person-plus-fill"></i> Create New Admin
-                    </a>
-                </div>
-            </div>
-        </div>
-    }
+    <!-- Superadmin actions: no separate admin creation page; superadmin manages users directly -->
 
     <!-- Quick Links -->
     <div class="row mt-4">

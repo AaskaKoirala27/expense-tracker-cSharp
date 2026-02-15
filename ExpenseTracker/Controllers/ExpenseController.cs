@@ -12,7 +12,7 @@ namespace ExpenseTracker.Controllers
     /// Controller responsible for handling all expense-related operations.
     /// Implements full CRUD (Create, Read, Update, Delete) functionality for expense management.
     /// </summary>
-    [Authorize(Roles = "User,Admin")]
+    [Authorize(Policy = "UserOrSuperAdmin")]
     [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class ExpenseController : Controller
     {
@@ -36,17 +36,17 @@ namespace ExpenseTracker.Controllers
         /// <returns>View with a list of all expenses including summary information</returns>
         public async Task<IActionResult> Index()
         {
-            var isAdmin = User.IsInRole("Admin");
+            var isSuperAdmin = string.Equals(User.Identity?.Name, "superadmin", StringComparison.OrdinalIgnoreCase);
             var userId = GetUserIdFromSessionOrClaims();
 
-            if (!isAdmin && userId == null)
+            if (!isSuperAdmin && userId == null)
             {
                 return RedirectToAction("Login", "Account");
             }
 
             var expensesQuery = _context.Expenses.AsNoTracking().AsQueryable();
 
-            if (!isAdmin)
+            if (!isSuperAdmin)
             {
                 expensesQuery = expensesQuery.Where(e => e.UserId == userId);
             }

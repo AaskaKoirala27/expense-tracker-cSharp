@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ExpenseTracker.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Policy = "SuperAdminOnly")]
     [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class AdminController : Controller
     {
@@ -289,58 +289,7 @@ namespace ExpenseTracker.Controllers
             return RedirectToAction(nameof(Users));
         }
 
-        [HttpGet]
-        public async Task<IActionResult> CreateAdmin()
-        {
-            // Only superadmin can create new admins
-            if (!IsSuperAdmin())
-            {
-                return Forbid();
-            }
-
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateAdmin([Bind("Username,PasswordHash")] User user)
-        {
-            // Only superadmin can create new admins
-            if (!IsSuperAdmin())
-            {
-                return Forbid();
-            }
-
-            if (ModelState.IsValid)
-            {
-                // Check if username already exists
-                if (await _context.Users.AnyAsync(u => u.Username == user.Username))
-                {
-                    ModelState.AddModelError("Username", "This username already exists.");
-                    return View(user);
-                }
-
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-
-                // Assign Admin role to the new admin
-                var adminRole = await _context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Admin");
-                if (adminRole != null)
-                {
-                    _context.UserRoles.Add(new UserRole
-                    {
-                        UserId = user.Id,
-                        RoleId = adminRole.Id
-                    });
-                    await _context.SaveChangesAsync();
-                }
-
-                TempData["SuccessMessage"] = "Admin user created successfully and assigned the Admin role.";
-                return RedirectToAction(nameof(Users));
-            }
-
-            return View(user);
-        }
+        // CreateAdmin removed — superadmin handles users directly; no separate admin creation page.
 
         // User Role Management Actions
         [HttpGet]

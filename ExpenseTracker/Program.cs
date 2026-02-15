@@ -49,8 +49,16 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("UserAccess", policy => policy.RequireRole("User", "Admin"));
+    // Keep a role for legacy 'User' entries
+    options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
+    // Allow access when user is in role User OR username is superadmin
+    options.AddPolicy("UserOrSuperAdmin", policy => policy.RequireAssertion(context =>
+        context.User.IsInRole("User") || string.Equals(context.User.Identity?.Name, "superadmin", StringComparison.OrdinalIgnoreCase)
+    ));
+    // Superadmin-only policy (based on username)
+    options.AddPolicy("SuperAdminOnly", policy => policy.RequireAssertion(context =>
+        string.Equals(context.User.Identity?.Name, "superadmin", StringComparison.OrdinalIgnoreCase)
+    ));
 });
 
 // Configure the database connection for the application

@@ -19,153 +19,149 @@ build_property.TargetFrameworkIdentifier = .NETCoreApp
 build_property.TargetFrameworkVersion = v10.0
 build_property.RootNamespace = ExpenseTracker
 build_property.RootNamespace = ExpenseTracker
-build_property.ProjectDir = /Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/
+build_property.ProjectDir = /Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 9.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = /Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker
+build_property.MSBuildProjectDirectory = /Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Account/AccessDenied.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Account/AccessDenied.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9BY2Nlc3NEZW5pZWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Account/Login.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Mb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Account/NotAuthorized.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Account/NotAuthorized.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Ob3RBdXRob3JpemVkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Account/Register.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Account/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Index.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Login.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Menus.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Menus.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vTWVudXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Menus/AssignMenus.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Menus/AssignMenus.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vTWVudXMvQXNzaWduTWVudXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Menus/Create.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Menus/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vTWVudXMvQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Menus/Delete.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Menus/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vTWVudXMvRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Menus/Details.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Menus/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vTWVudXMvRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Menus/Edit.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Menus/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vTWVudXMvRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Menus/Index.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Menus/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vTWVudXMvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Users.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Users.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vVXNlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Users/Create.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Users/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vVXNlcnMvQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Users/CreateAdmin.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vVXNlcnMvQ3JlYXRlQWRtaW4uY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Users/Delete.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Users/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vVXNlcnMvRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Users/Details.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Users/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vVXNlcnMvRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Users/Edit.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Users/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vVXNlcnMvRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Users/Index.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Users/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vVXNlcnMvSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Users/ManageUserRoles.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Users/ManageUserRoles.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vVXNlcnMvTWFuYWdlVXNlclJvbGVzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Dashboard/Index.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Dashboard/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRGFzaGJvYXJkL0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Expense/Create.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Expense/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRXhwZW5zZS9DcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Expense/Delete.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Expense/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRXhwZW5zZS9EZWxldGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Expense/Details.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Expense/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRXhwZW5zZS9EZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Expense/Edit.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Expense/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRXhwZW5zZS9FZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Expense/Index.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Expense/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvRXhwZW5zZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Home/Index.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Home/Privacy.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Shared/Components/MainMenu/Default.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Shared/Components/MainMenu/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0NvbXBvbmVudHMvTWFpbk1lbnUvRGVmYXVsdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Shared/Error.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Shared/_ValidationScriptsPartial.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/_ViewImports.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/_ViewStart.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Shared/_Layout.cshtml]
+[/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-126ttedj4m

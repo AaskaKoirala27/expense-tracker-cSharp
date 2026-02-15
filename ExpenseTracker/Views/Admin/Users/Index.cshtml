@@ -10,12 +10,7 @@
             <h1><i class="bi bi-people"></i> Manage Users</h1>
         </div>
         <div class="col-auto">
-            @if (isSuperAdmin)
-            {
-                <a asp-action="CreateAdmin" class="btn btn-primary me-2">
-                    <i class="bi bi-shield-plus"></i> Create Admin
-                </a>
-            }
+            <!-- CreateAdmin removed; superadmin manages users directly -->
             <a asp-action="CreateUser" class="btn btn-success">
                 <i class="bi bi-plus-circle"></i> Add User
             </a>
