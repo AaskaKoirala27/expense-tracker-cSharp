@@ -1,140 +1,186 @@
-﻿@model ExpenseTracker.ViewModels.HomeSummaryViewModel
+﻿@using ExpenseTracker.ViewModels
+
 @{
     ViewData["Title"] = "ExpenseTracker";
+    var isSuperAdmin = User.Identity?.Name == "superadmin";
     var isAdmin = User.IsInRole("Admin");
 }
 
 <div class="container-fluid mt-5">
-    <h1><i class="bi bi-wallet2"></i> ExpenseTracker</h1>
-    <p class="text-muted">@(isAdmin ? "System-wide expense management" : "Your personal expense tracking")</p>
-
-    <div class="row mt-4">
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h6 class="card-title text-muted">@(isAdmin ? "Total Expenses" : "Your Expenses")</h6>
-                    <p class="display-5 mb-0">@Model.TotalExpenses</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card shadow-sm border-0">
-                <div class="card-body">
-                    <h6 class="card-title text-muted">@(isAdmin ? "Total Amount" : "Total Spent")</h6>
-                    <p class="display-5 mb-0">@($"NPR {Model.TotalAmount:N2}")</p>
-                </div>
-            </div>
+    <!-- Savings Motto Section -->
+    <div class="savings-motto-container mb-5 text-center">
+        <div class="savings-motto-card">
+            <h1 class="savings-motto-text">
+                <span class="piggy-icon">🐷</span>
+                A penny saved is a penny earned
+                <span class="money-icon">💰</span>
+            </h1>
         </div>
     </div>
 
-    <div class="row mt-3 mb-4">
-        <div class="col-md-12">
-            <div class="btn-group" role="group">
-                <a asp-controller="Expense" asp-action="Index" class="btn btn-primary">
-                    <i class="bi bi-eye"></i> View All Expenses
-                </a>
-                <a asp-controller="Expense" asp-action="Create" class="btn btn-success">
-                    <i class="bi bi-plus-circle"></i> Add New Expense
-                </a>
-                @if (isAdmin)
-                {
-                    <a asp-controller="Dashboard" asp-action="Index" class="btn btn-info">
-                        <i class="bi bi-speedometer2"></i> Detailed Analytics
+    @if (Model is SuperAdminDashboardViewModel superAdminModel)
+    {
+        <!-- SuperAdmin Dashboard -->
+        <h1><i class="bi bi-shield-lock"></i> SuperAdmin Dashboard</h1>
+        <p class="text-muted">Platform-wide expense management overview</p>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h6 class="card-title text-muted">Total Users</h6>
+                        <p class="display-5 mb-0">@superAdminModel.TotalUsers</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h6 class="card-title text-muted">Total Expenses (All Users)</h6>
+                        <p class="display-5 mb-0">@superAdminModel.TotalExpenses</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    }
+    else if (Model is HomeSummaryViewModel userModel)
+    {
+        <!-- Regular User / Admin Dashboard -->
+        <h1><i class="bi bi-wallet2"></i> ExpenseTracker</h1>
+        <p class="text-muted">@(isAdmin ? "System-wide expense management" : "Your personal expense tracking")</p>
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h6 class="card-title text-muted">@(isAdmin ? "Total Expenses" : "Your Expenses")</h6>
+                        <p class="display-5 mb-0">@userModel.TotalExpenses</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h6 class="card-title text-muted">@(isAdmin ? "Total Amount" : "Total Spent")</h6>
+                        <p class="display-5 mb-0">@($"NPR {userModel.TotalAmount:N2}")</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3 mb-4">
+            <div class="col-md-12">
+                <div class="btn-group" role="group">
+                    <a asp-controller="Expense" asp-action="Index" class="btn btn-primary">
+                        <i class="bi bi-eye"></i> View All Expenses
                     </a>
-                }
+                    <a asp-controller="Expense" asp-action="Create" class="btn btn-success">
+                        <i class="bi bi-plus-circle"></i> Add New Expense
+                    </a>
+                    @if (isAdmin)
+                    {
+                        <a asp-controller="Dashboard" asp-action="Index" class="btn btn-info">
+                            <i class="bi bi-speedometer2"></i> Detailed Analytics
+                        </a>
+                    }
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="row mt-4">
-        <div class="col-lg-12">
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-light">
-                    <h5 class="mb-0"><i class="bi bi-clock-history"></i> Recent @(isAdmin ? "System" : "Your") Expenses</h5>
-                </div>
-                <div class="card-body">
-                    @if (!isAdmin && Model.RecentExpenses.Count == 0 || isAdmin && Model.AdminRecentExpenses.Count == 0)
-                    {
-                        <p class="text-muted mb-0">No recent expenses.</p>
-                    }
-                    else
-                    {
-                        <div class="table-responsive">
-                            <table class="table table-sm align-middle mb-0">
-                                <thead>
-                                    <tr>
+
+
+        <div class="row mt-4">
+            <div class="col-lg-12">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="bi bi-clock-history"></i> Recent @(isAdmin ? "System" : "Your") Expenses</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (!isAdmin && userModel.RecentExpenses.Count == 0 || isAdmin && userModel.AdminRecentExpenses.Count == 0)
+                        {
+                            <p class="text-muted mb-0">No recent expenses.</p>
+                        }
+                        else
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-sm align-middle mb-0">
+                                    <thead>
+                                        <tr>
+                                            @if (isAdmin)
+                                            {
+                                                <th>User</th>
+                                            }
+                                            <th>Date</th>
+                                            <th>Description</th>
+                                            <th>Category</th>
+                                            <th class="text-end">Amount</th>
+                                            <th class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
                                         @if (isAdmin)
                                         {
-                                            <th>User</th>
+                                            @foreach (var expense in userModel.AdminRecentExpenses)
+                                            {
+                                                var rowTarget = Url.Action("Edit", "Expense", new { id = expense.Id });
+                                                <tr class="clickable-row" data-href="@rowTarget">
+                                                    <td>
+                                                        <strong>@expense.Username</strong>
+                                                        @if (expense.IsSuperAdmin)
+                                                        {
+                                                            <span class="badge bg-danger ms-1">Superadmin</span>
+                                                        }
+                                                        else if (expense.IsAdmin)
+                                                        {
+                                                            <span class="badge bg-warning text-dark ms-1">Admin</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge bg-secondary ms-1">Regular</span>
+                                                        }
+                                                    </td>
+                                                    <td><small class="text-muted">@expense.Date.ToString("MMM dd, yyyy")</small></td>
+                                                    <td>@expense.Description</td>
+                                                    <td><span class="badge bg-info">@expense.Category</span></td>
+                                                    <td class="text-end">@($"NPR {expense.Amount:N2}")</td>
+                                                    <td class="text-center">
+                                                        <a href="@Url.Action("Edit", "Expense", new { id = expense.Id })" class="btn btn-sm btn-warning">Edit</a>
+                                                        <a href="@Url.Action("Delete", "Expense", new { id = expense.Id })" class="btn btn-sm btn-danger">Delete</a>
+                                                    </td>
+                                                </tr>
+                                            }
                                         }
-                                        <th>Date</th>
-                                        <th>Description</th>
-                                        <th>Category</th>
-                                        <th class="text-end">Amount</th>
-                                        <th class="text-center">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (isAdmin)
-                                    {
-                                        @foreach (var expense in Model.AdminRecentExpenses)
+                                        else
                                         {
-                                            var rowTarget = Url.Action("Edit", "Expense", new { id = expense.Id });
-                                            <tr class="clickable-row" data-href="@rowTarget">
-                                                <td>
-                                                    <strong>@expense.Username</strong>
-                                                    @if (expense.IsSuperAdmin)
-                                                    {
-                                                        <span class="badge bg-danger ms-1">Superadmin</span>
-                                                    }
-                                                    else if (expense.IsAdmin)
-                                                    {
-                                                        <span class="badge bg-warning text-dark ms-1">Admin</span>
-                                                    }
-                                                    else
-                                                    {
-                                                        <span class="badge bg-secondary ms-1">Regular</span>
-                                                    }
-                                                </td>
-                                                <td><small class="text-muted">@expense.Date.ToString("MMM dd, yyyy")</small></td>
-                                                <td>@expense.Description</td>
-                                                <td><span class="badge bg-info">@expense.Category</span></td>
-                                                <td class="text-end">@($"NPR {expense.Amount:N2}")</td>
-                                                <td class="text-center">
-                                                    <a href="@Url.Action("Edit", "Expense", new { id = expense.Id })" class="btn btn-sm btn-warning">Edit</a>
-                                                    <a href="@Url.Action("Delete", "Expense", new { id = expense.Id })" class="btn btn-sm btn-danger">Delete</a>
-                                                </td>
-                                            </tr>
+                                            @foreach (var expense in userModel.RecentExpenses)
+                                            {
+                                                var rowTarget = Url.Action("Details", "Expense", new { id = expense.Id });
+                                                <tr class="clickable-row" data-href="@rowTarget">
+                                                    <td><small class="text-muted">@expense.Date.ToString("MMM dd, yyyy")</small></td>
+                                                    <td>
+                                                        <a href="@Url.Action("Details", "Expense", new { id = expense.Id })">
+                                                            @expense.Description
+                                                        </a>
+                                                    </td>
+                                                    <td><span class="badge bg-info">@expense.Category</span></td>
+                                                    <td class="text-end">@($"NPR {expense.Amount:N2}")</td>
+                                                    <td class="text-center">
+                                                        <a href="@Url.Action("Details", "Expense", new { id = expense.Id })" class="btn btn-sm btn-info">Details</a>
+                                                    </td>
+                                                </tr>
+                                            }
                                         }
-                                    }
-                                    else
-                                    {
-                                        @foreach (var expense in Model.RecentExpenses)
-                                        {
-                                            var rowTarget = Url.Action("Details", "Expense", new { id = expense.Id });
-                                            <tr class="clickable-row" data-href="@rowTarget">
-                                                <td><small class="text-muted">@expense.Date.ToString("MMM dd, yyyy")</small></td>
-                                                <td>
-                                                    <a href="@Url.Action("Details", "Expense", new { id = expense.Id })">
-                                                        @expense.Description
-                                                    </a>
-                                                </td>
-                                                <td><span class="badge bg-info">@expense.Category</span></td>
-                                                <td class="text-end">@($"NPR {expense.Amount:N2}")</td>
-                                                <td class="text-center">
-                                                    <a href="@Url.Action("Details", "Expense", new { id = expense.Id })" class="btn btn-sm btn-info">Details</a>
-                                                </td>
-                                            </tr>
-                                        }
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
 </div>
 
 @section Styles {
@@ -182,6 +228,7 @@
 }
 
 @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.querySelectorAll('.clickable-row').forEach(row => {
             row.addEventListener('click', (event) => {
@@ -196,5 +243,9 @@
                 }
             });
         });
+
+
+
+
     </script>
 }

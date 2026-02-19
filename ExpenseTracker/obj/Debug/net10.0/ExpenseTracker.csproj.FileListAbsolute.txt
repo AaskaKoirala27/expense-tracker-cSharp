@@ -138,7 +138,6 @@
 /Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/obj/Debug/net10.0/scopedcss/Views/Shared/_Layout.cshtml.rz.scp.css
 /Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/obj/Debug/net10.0/scopedcss/bundle/ExpenseTracker.styles.css
 /Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/obj/Debug/net10.0/scopedcss/projectbundle/ExpenseTracker.bundle.scp.css
-/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/obj/Debug/net10.0/compressed/lsz27yj9kw-{0}-lugek5hnai-lugek5hnai.gz
 /Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/obj/Debug/net10.0/compressed/9yjzlft51c-{0}-61n19gt1b8-61n19gt1b8.gz
 /Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/obj/Debug/net10.0/compressed/jije8pp9h6-{0}-fr7q2aak1r-fr7q2aak1r.gz
 /Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/obj/Debug/net10.0/compressed/lufwwbcll3-{0}-bqjiyaj88i-bqjiyaj88i.gz
@@ -428,3 +427,4 @@
 /Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/obj/Debug/net10.0/ExpenseTracker.pdb
 /Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/obj/Debug/net10.0/ExpenseTracker.genruntimeconfig.cache
 /Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/obj/Debug/net10.0/ref/ExpenseTracker.dll
+/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/obj/Debug/net10.0/compressed/lsz27yj9kw-{0}-47myb2hznq-47myb2hznq.gz

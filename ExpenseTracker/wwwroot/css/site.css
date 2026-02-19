@@ -29,3 +29,257 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+/* Savings Motto Home Page Styling */
+.savings-motto-container {
+  padding: 30px 0;
+  animation: fadeInDown 0.6s ease;
+}
+
+.savings-motto-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  padding: 40px 30px;
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+}
+
+.savings-motto-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 32px rgba(102, 126, 234, 0.4);
+}
+
+.savings-motto-text {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.piggy-icon,
+.money-icon {
+  font-size: 3rem;
+  display: inline-block;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.piggy-icon {
+  animation-delay: 0s;
+}
+
+.money-icon {
+  animation-delay: 0.3s;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .savings-motto-text {
+    font-size: 1.8rem;
+  }
+  
+  .piggy-icon,
+  .money-icon {
+    font-size: 2rem;
+  }
+}
+
+/* Login Page Styling */
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 120px);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.login-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 12px 40px rgba(102, 126, 234, 0.2);
+  padding: 50px 40px;
+  width: 100%;
+  max-width: 420px;
+  animation: slideUp 0.5s ease;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.login-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: #333;
+  font-weight: 700;
+}
+
+.emoji-icon {
+  font-size: 2.5rem;
+  display: inline-block;
+}
+
+.emoji-icon.piggy {
+  animation: piggy-wobble 2s ease-in-out infinite;
+}
+
+.emoji-icon.money {
+  animation: money-spin 2s ease-in-out infinite;
+}
+
+@keyframes piggy-wobble {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+}
+
+@keyframes money-spin {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+.login-form {
+  margin: 0;
+}
+
+.login-input {
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.login-input:focus {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+  outline: none;
+}
+
+.login-input::placeholder {
+  color: #999;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.btn-login {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.btn-login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.btn-login:active {
+  transform: translateY(0);
+}
+
+.login-footer {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.footer-text {
+  display: block;
+  color: #666;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+}
+
+.btn-register {
+  background: none;
+  border: 2px solid #667eea;
+  color: #667eea;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-register:hover {
+  background: #667eea;
+  color: white;
+  text-decoration: none;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .login-card {
+    padding: 30px 20px;
+  }
+
+  .login-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .emoji-icon {
+    font-size: 2rem;
+  }
+}

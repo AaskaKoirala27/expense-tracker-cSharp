@@ -26,7 +26,7 @@ namespace ExpenseTracker.Controllers
         {
             if (User.Identity?.IsAuthenticated == true)
             {
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "Home");
             }
 
             return View(new RegisterViewModel());
@@ -79,7 +79,7 @@ namespace ExpenseTracker.Controllers
         {
             if (User.Identity?.IsAuthenticated == true)
             {
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "Home");
             }
 
             return View(new LoginViewModel());
@@ -137,7 +137,7 @@ namespace ExpenseTracker.Controllers
             HttpContext.Session.SetInt32("UserId", user.Id);
             HttpContext.Session.SetString("Username", user.Username);
 
-            return RedirectToAction("Index", "Dashboard");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]

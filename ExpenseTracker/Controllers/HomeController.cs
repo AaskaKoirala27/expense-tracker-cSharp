@@ -14,20 +14,29 @@ namespace ExpenseTracker.Controllers;
 public class HomeController : Controller
 {
     private readonly HomeSummaryService _summaryService;
+    private readonly SuperAdminService _superAdminService;
 
-    public HomeController(HomeSummaryService summaryService)
+    public HomeController(HomeSummaryService summaryService, SuperAdminService superAdminService)
     {
         _summaryService = summaryService;
+        _superAdminService = superAdminService;
     }
 
     public async Task<IActionResult> Index()
     {
+        var isSuperAdmin = User.Identity?.Name == "superadmin";
         var isAdmin = User.IsInRole("Admin");
         var userId = GetUserIdFromSessionOrClaims();
 
-        if (!isAdmin && userId == null)
+        if (!isSuperAdmin && !isAdmin && userId == null)
         {
             return RedirectToAction("Login", "Account");
+        }
+
+        if (isSuperAdmin)
+        {
+            var superAdminData = await _superAdminService.GetDashboardDataAsync();
+            return View("Index", superAdminData);
         }
 
         var model = await _summaryService.GetSummaryAsync(userId, isAdmin);

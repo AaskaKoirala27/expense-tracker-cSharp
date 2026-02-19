@@ -2431,19 +2431,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/Aish/.nuget/packages/": {}
+    "/Users/aaskakoirala/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/ExpenseTracker.csproj",
+      "projectUniqueName": "/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/ExpenseTracker.csproj",
       "projectName": "ExpenseTracker",
-      "projectPath": "/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/ExpenseTracker.csproj",
-      "packagesPath": "/Users/Aish/.nuget/packages/",
-      "outputPath": "/Users/Aish/Desktop/expense-tracker-cSharp/ExpenseTracker/obj/",
+      "projectPath": "/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/ExpenseTracker.csproj",
+      "packagesPath": "/Users/aaskakoirala/.nuget/packages/",
+      "outputPath": "/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/Aish/.nuget/NuGet/NuGet.Config"
+        "/Users/aaskakoirala/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
