@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ExpenseTracker.Data;
 using ExpenseTracker.Models;
+using ExpenseTracker.Services;
+using ExpenseTracker.ViewModels;
 using System.Security.Claims;
 
 namespace ExpenseTracker.Controllers
@@ -18,15 +20,18 @@ namespace ExpenseTracker.Controllers
     {
         // Database context for accessing and manipulating expense data
         private readonly AppDbContext _context;
+        private readonly ExpenseGraphService _graphService;
 
         /// <summary>
         /// Constructor that initializes the controller with the database context.
         /// The context is injected via dependency injection configured in Program.cs.
         /// </summary>
         /// <param name="context">Database context for expense operations</param>
-        public ExpenseController(AppDbContext context)
+        /// <param name="graphService">Service for generating expense graph data</param>
+        public ExpenseController(AppDbContext context, ExpenseGraphService graphService)
         {
             _context = context;
+            _graphService = graphService;
         }
 
         /// <summary>
@@ -53,6 +58,59 @@ namespace ExpenseTracker.Controllers
 
             var expenses = await expensesQuery.ToListAsync();
             return View(expenses);
+        }
+
+        /// <summary>
+        /// Displays an expense graph with custom date filtering.
+        /// For regular users: shows their personal expenses
+        /// For superadmin: shows system-wide expenses
+        /// GET: Expense/Graph
+        /// </summary>
+        /// <param name="startDate">Filter start date (optional)</param>
+        /// <param name="endDate">Filter end date (optional)</param>
+        /// <returns>View with expense graph data</returns>
+        public async Task<IActionResult> Graph(DateTime? startDate, DateTime? endDate)
+        {
+            var isSuperAdmin = string.Equals(User.Identity?.Name, "superadmin", StringComparison.OrdinalIgnoreCase);
+            var userId = GetUserIdFromSessionOrClaims();
+
+            // Allow access to superadmin or logged-in users
+            if (!isSuperAdmin && userId == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Validate dates - prevent future dates
+            if (startDate.HasValue && startDate.Value > DateTime.Now)
+            {
+                ModelState.AddModelError("startDate", "Start date cannot be in the future.");
+                startDate = null;
+            }
+
+            if (endDate.HasValue && endDate.Value > DateTime.Now)
+            {
+                ModelState.AddModelError("endDate", "End date cannot be in the future.");
+                endDate = null;
+            }
+
+            // Ensure start date is before end date
+            if (startDate.HasValue && endDate.HasValue && startDate.Value > endDate.Value)
+            {
+                ModelState.AddModelError("startDate", "Start date must be before end date.");
+            }
+
+            // Get graph data based on user type
+            ExpenseGraphViewModel graphData;
+            if (isSuperAdmin)
+            {
+                graphData = await _graphService.GetSystemExpenseGraphDataAsync(startDate, endDate);
+            }
+            else
+            {
+                graphData = await _graphService.GetExpenseGraphDataAsync(userId.Value, startDate, endDate);
+            }
+
+            return View(graphData);
         }
 
         /// <summary>

@@ -100,7 +100,7 @@ namespace ExpenseTracker.Controllers
             HttpContext.Session.SetInt32("UserId", user.Id);
             HttpContext.Session.SetString("Username", user.Username);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Home");
         }
 
         // Admin Portal Dashboard
@@ -639,5 +639,46 @@ namespace ExpenseTracker.Controllers
         private bool MenuExists(int id)
         {
             return _context.Menus.Any(e => e.Id == id);
+        }
+
+        // SuperAdmin - Manage Users
+        [Authorize(Policy = "SuperAdminOnly")]
+        [HttpGet]
+        public async Task<IActionResult> ManageUsers()
+        {
+            var superAdminService = HttpContext.RequestServices.GetRequiredService<SuperAdminService>();
+            var users = await superAdminService.GetAllUsersAsync();
+            return View(users);
+        }
+
+        // SuperAdmin - Delete User
+        [Authorize(Policy = "SuperAdminOnly")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteUserSuper(int id)
+        {
+            var superAdminService = HttpContext.RequestServices.GetRequiredService<SuperAdminService>();
+            var result = await superAdminService.DeleteUserAsync(id);
+            
+            if (result)
+            {
+                TempData["SuccessMessage"] = "User deleted successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to delete user.";
+            }
+
+            return RedirectToAction(nameof(ManageUsers));
+        }
+
+        // SuperAdmin - View All Expenses
+        [Authorize(Policy = "SuperAdminOnly")]
+        [HttpGet]
+        public async Task<IActionResult> ViewAllExpenses()
+        {
+            var superAdminService = HttpContext.RequestServices.GetRequiredService<SuperAdminService>();
+            var expenses = await superAdminService.GetAllExpensesAsync();
+            return View(expenses);
         }    }
 }

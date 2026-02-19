@@ -51,6 +51,26 @@ namespace ExpenseTracker.Services
                 RecentExpenses = recentExpenses
             };
 
+            // Get monthly expenses for both user and admin
+            if (!isAdmin && userId.HasValue)
+            {
+                var userMonthlyExpenses = await _context.Expenses
+                    .AsNoTracking()
+                    .Where(e => e.UserId == userId)
+                    .ToListAsync();
+
+                viewModel.MonthlyExpenses = userMonthlyExpenses
+                    .GroupBy(e => new { e.Date.Year, e.Date.Month })
+                    .Select(g => new MonthlyExpenseViewModel
+                    {
+                        Month = new DateTime(g.Key.Year, g.Key.Month, 1),
+                        TotalAmount = g.Sum(e => e.Amount),
+                        ExpenseCount = g.Count()
+                    })
+                    .OrderBy(m => m.Month)
+                    .ToList();
+            }
+
             // Admin-only features
             if (isAdmin)
             {

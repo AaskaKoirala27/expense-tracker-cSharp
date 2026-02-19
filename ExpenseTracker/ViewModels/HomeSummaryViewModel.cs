@@ -10,6 +10,9 @@ namespace ExpenseTracker.ViewModels
 
         public List<RecentExpenseViewModel> RecentExpenses { get; set; } = new();
 
+        // User monthly expenses
+        public List<MonthlyExpenseViewModel> MonthlyExpenses { get; set; } = new();
+
         // Admin-only fields
         public List<UserExpenseViewModel> UserExpenses { get; set; } = new();
 
