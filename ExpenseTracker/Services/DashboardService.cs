@@ -1,9 +1,22 @@
+/*
+ * File: Services/DashboardService.cs
+ * Purpose: Assemble the `DashboardViewModel` for regular users and administrators.
+ * Responsibilities:
+ *  - Aggregate expense counts and totals
+ *  - Create category summaries and recent expense lists
+ *  - For admin users, include per-user expense summaries
+ */
+
 using Microsoft.EntityFrameworkCore;
 using ExpenseTracker.Data;
 using ExpenseTracker.ViewModels;
 
 namespace ExpenseTracker.Services
 {
+    /// <summary>
+    /// Service that creates `DashboardViewModel` instances used by `DashboardController`.
+    /// Provides user-scoped and admin-scoped aggregated data for the dashboard.
+    /// </summary>
     public class DashboardService
     {
         private readonly AppDbContext _context;

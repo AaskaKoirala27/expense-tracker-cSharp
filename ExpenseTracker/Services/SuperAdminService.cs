@@ -1,9 +1,21 @@
+/*
+ * File: Services/SuperAdminService.cs
+ * Purpose: Encapsulates high-privilege operations used by the superadmin portal.
+ * Responsibilities:
+ *  - Produce system-wide dashboards and lists (users, expenses)
+ *  - Perform user management tasks such as delete, reset password, activate/deactivate
+ */
+
 using Microsoft.EntityFrameworkCore;
 using ExpenseTracker.Data;
 using ExpenseTracker.ViewModels;
 
 namespace ExpenseTracker.Services
 {
+    /// <summary>
+    /// Service class that provides operations required by the superadmin UI and workflows.
+    /// Intended to be injected where superadmin-level operations are needed (e.g., AdminController).
+    /// </summary>
     public class SuperAdminService
     {
         private readonly AppDbContext _context;

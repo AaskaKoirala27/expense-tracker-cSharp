@@ -1,9 +1,20 @@
+/*
+ * File: Services/HomeSummaryService.cs
+ * Purpose: Build the `HomeSummaryViewModel` for the application's home/index page.
+ * Responsibilities:
+ *  - Provide total counts, totals and recent expenses for the current user or admin
+ *  - Build monthly aggregates for charts
+ */
+
 using Microsoft.EntityFrameworkCore;
 using ExpenseTracker.Data;
 using ExpenseTracker.ViewModels;
 
 namespace ExpenseTracker.Services
 {
+    /// <summary>
+    /// Service that prepares the home/index summary view model used by `HomeController`.
+    /// </summary>
     public class HomeSummaryService
     {
         private readonly AppDbContext _context;

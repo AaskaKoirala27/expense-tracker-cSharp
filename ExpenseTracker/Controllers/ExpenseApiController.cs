@@ -1,3 +1,14 @@
+/*
+ * File: Controllers/ExpenseApiController.cs
+ * Purpose: Minimal Web API controller exposing CRUD endpoints for `Expense` entities.
+ * Responsibilities:
+ *  - Provide JSON endpoints for listing, retrieving, creating, updating and deleting expenses
+ *  - Return appropriate HTTP status codes (200, 201, 204, 400, 404)
+ * Important notes:
+ *  - This controller is `ApiController`-annotated and uses route `api/expenseapi`
+ *  - Input validation and authentication (if needed) should be enforced by middleware or filters
+ */
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ExpenseTracker.Data;
@@ -5,6 +16,10 @@ using ExpenseTracker.Models;
 
 namespace ExpenseTracker.Controllers
 {
+    /// <summary>
+    /// API controller exposing RESTful CRUD operations for `Expense`.
+    /// Endpoints: GET all, GET by id, POST create, PUT update, DELETE remove.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ExpenseApiController : ControllerBase

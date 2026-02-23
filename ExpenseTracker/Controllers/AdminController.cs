@@ -1,3 +1,16 @@
+/*
+ * File: Controllers/AdminController.cs
+ * Purpose: Admin portal controller for managing users, roles, menus, and system-wide data.
+ * Responsibilities:
+ *  - Authenticate and authorize the superadmin portal (policy: SuperAdminOnly)
+ *  - Provide CRUD operations for users and menus used by administrators
+ *  - Manage role assignments and menu-to-role assignments
+ *  - Expose SuperAdmin-only operations that call `SuperAdminService` for sensitive tasks
+ * Important notes:
+ *  - Methods are protected with the `SuperAdminOnly` policy where applicable
+ *  - Uses `AppDbContext` for most DB operations and `SuperAdminService` for higher-privilege flows
+ */
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +24,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ExpenseTracker.Controllers
 {
+    /// <summary>
+    /// Controller used by the superadmin to manage users, roles, menus and view system-wide statistics.
+    /// Key actions: Login (superadmin), Index (dashboard), Users, Create/Edit/Delete users,
+    /// ManageUserRoles, AssignMenus and SuperAdmin-specific actions like ManageUsers/ActivateUser.
+    /// </summary>
     [Authorize(Policy = "SuperAdminOnly")]
     [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class AdminController : Controller

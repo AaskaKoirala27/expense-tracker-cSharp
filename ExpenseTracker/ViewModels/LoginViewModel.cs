@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ExpenseTracker.ViewModels
 {
+    /// <summary>
+    /// View model used for the login form.
+    /// </summary>
     public class LoginViewModel
     {
         [Required]
