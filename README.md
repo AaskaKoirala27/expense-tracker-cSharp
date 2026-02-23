@@ -344,7 +344,7 @@ This project is open source and available under the [MIT License](LICENSE).
 - GitHub: [@AaskaKoirala27](https://github.com/AaskaKoirala27)
 
 **Aishmita Yonzan**
-- GitHub: [xaishmitax] (https://github.com/xaishmitax)
+- GitHub: [@xaishmitax](https://github.com/xaishmitax)
 
 ## Acknowledgments
 
