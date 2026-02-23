@@ -58,6 +58,26 @@
                                 }
                             </td>
                             <td class="text-center">
+                                @if (user.IsActive)
+                                {
+                                    <form method="post" asp-action="DeactivateUser" style="display: inline;">
+                                        <input type="hidden" name="id" value="@user.Id" />
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-warning" onclick="return confirm('Are you sure you want to deactivate this user?');">
+                                            <i class="bi bi-pause-circle"></i> Deactivate
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <form method="post" asp-action="ActivateUser" style="display: inline;">
+                                        <input type="hidden" name="id" value="@user.Id" />
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-success">
+                                            <i class="bi bi-play-circle"></i> Activate
+                                        </button>
+                                    </form>
+                                }
                                 <form method="post" asp-action="DeleteUserSuper" style="display: inline;">
                                     <input type="hidden" name="id" value="@user.Id" />
                                     @Html.AntiForgeryToken()

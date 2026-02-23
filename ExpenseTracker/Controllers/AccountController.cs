@@ -105,6 +105,13 @@ namespace ExpenseTracker.Controllers
                 return View(model);
             }
 
+            // Check if account is deactivated
+            if (!user.IsActive)
+            {
+                ModelState.AddModelError(string.Empty, "Your account is deactivated for the time being.");
+                return View(model);
+            }
+
             // Block superadmin from logging in via regular login page
             if (user.Username == "superadmin")
             {

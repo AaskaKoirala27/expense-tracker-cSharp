@@ -1,11 +1,11 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ExpenseTracker.Models
 {
     /// <summary>
     /// Represents an expense entry in the Expense Tracker application.
-    /// This model contains all the information related to a single expense transaction.
     /// </summary>
     public class Expense
     {
@@ -17,26 +17,26 @@ namespace ExpenseTracker.Models
 
         /// <summary>
         /// Foreign key linking this expense to a user.
-        /// Nullable to keep existing data valid until users are assigned.
+        /// Nullable so API requests without UserId do not fail.
         /// </summary>
         public int? UserId { get; set; }
 
         /// <summary>
         /// Navigation property to the user who owns this expense.
+        /// Ignored during JSON serialization to prevent API POST errors.
         /// </summary>
-        public User User { get; set; } = null!;
+        [JsonIgnore]
+        public User? User { get; set; }
 
         /// <summary>
-        /// Brief description of the expense (e.g., "Grocery Shopping", "Gas Station").
-        /// Must be provided and cannot exceed 100 characters.
+        /// Brief description of the expense.
         /// </summary>
         [Required(ErrorMessage = "Description is required")]
         [StringLength(100, ErrorMessage = "Description cannot be longer than 100 characters")]
         public string Description { get; set; } = string.Empty;
 
         /// <summary>
-        /// The monetary amount of the expense.
-        /// Must be greater than 0 and is stored with currency formatting.
+        /// Monetary amount of the expense.
         /// </summary>
         [Required(ErrorMessage = "Amount is required")]
         [Range(0.01, double.MaxValue, ErrorMessage = "Amount must be greater than 0")]
@@ -44,8 +44,7 @@ namespace ExpenseTracker.Models
         public decimal Amount { get; set; }
 
         /// <summary>
-        /// Category classification for the expense (e.g., Food, Transportation, Entertainment).
-        /// Helps organize and filter expenses by type. Required field with max length of 50 characters.
+        /// Category classification for the expense.
         /// </summary>
         [Required(ErrorMessage = "Category is required")]
         [StringLength(50, ErrorMessage = "Category cannot be longer than 50 characters")]
@@ -53,22 +52,19 @@ namespace ExpenseTracker.Models
 
         /// <summary>
         /// The date when the expense occurred.
-        /// Required field displayed as a date picker in the UI.
         /// </summary>
         [Required(ErrorMessage = "Date is required")]
         [DataType(DataType.Date)]
         public DateTime Date { get; set; }
 
         /// <summary>
-        /// Optional additional notes or details about the expense.
-        /// Can contain up to 500 characters for extra context.
+        /// Optional notes about the expense.
         /// </summary>
         [StringLength(500, ErrorMessage = "Notes cannot be longer than 500 characters")]
         public string? Notes { get; set; }
 
         /// <summary>
-        /// Timestamp indicating when this expense record was created in the system.
-        /// Automatically set to the current date and time when the object is instantiated.
+        /// Timestamp when this expense was created.
         /// </summary>
         public DateTime CreatedAt { get; set; } = DateTime.Now;
     }

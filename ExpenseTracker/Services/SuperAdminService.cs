@@ -54,7 +54,7 @@ namespace ExpenseTracker.Services
                     Id = u.Id,
                     Username = u.Username,
                     RegistrationDate = new DateTime(2026, 2, 1), // You can add CreatedAt to User model later
-                    IsActive = true, // You can add IsActive to User model later
+                    IsActive = u.IsActive,
                     TotalExpenses = u.Expenses.Count,
                     TotalAmount = u.Expenses.Sum(e => e.Amount)
                 })
@@ -101,6 +101,28 @@ namespace ExpenseTracker.Services
                 return false;
 
             user.PasswordHash = PasswordHasher.HashPassword(newPassword);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> ActivateUserAsync(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null || user.Username == "superadmin")
+                return false;
+
+            user.IsActive = true;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeactivateUserAsync(int userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null || user.Username == "superadmin")
+                return false;
+
+            user.IsActive = false;
             await _context.SaveChangesAsync();
             return true;
         }

@@ -672,6 +672,48 @@ namespace ExpenseTracker.Controllers
             return RedirectToAction(nameof(ManageUsers));
         }
 
+        // SuperAdmin - Activate User
+        [Authorize(Policy = "SuperAdminOnly")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ActivateUser(int id)
+        {
+            var superAdminService = HttpContext.RequestServices.GetRequiredService<SuperAdminService>();
+            var result = await superAdminService.ActivateUserAsync(id);
+            
+            if (result)
+            {
+                TempData["SuccessMessage"] = "User activated successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to activate user.";
+            }
+
+            return RedirectToAction(nameof(ManageUsers));
+        }
+
+        // SuperAdmin - Deactivate User
+        [Authorize(Policy = "SuperAdminOnly")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeactivateUser(int id)
+        {
+            var superAdminService = HttpContext.RequestServices.GetRequiredService<SuperAdminService>();
+            var result = await superAdminService.DeactivateUserAsync(id);
+            
+            if (result)
+            {
+                TempData["SuccessMessage"] = "User deactivated successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to deactivate user.";
+            }
+
+            return RedirectToAction(nameof(ManageUsers));
+        }
+
         // SuperAdmin - View All Expenses
         [Authorize(Policy = "SuperAdminOnly")]
         [HttpGet]

@@ -13,6 +13,8 @@ namespace ExpenseTracker.Models
         [Required]
         public string PasswordHash { get; set; } = string.Empty;
 
+        public bool IsActive { get; set; } = true;
+
         public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
 
         public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
