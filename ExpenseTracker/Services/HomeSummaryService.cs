@@ -12,9 +12,8 @@ using ExpenseTracker.ViewModels;
 
 namespace ExpenseTracker.Services
 {
-    /// <summary>
+    
     /// Service that prepares the home/index summary view model used by `HomeController`.
-    /// </summary>
     public class HomeSummaryService
     {
         private readonly AppDbContext _context;

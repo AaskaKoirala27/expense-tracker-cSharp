@@ -24,11 +24,11 @@ using ExpenseTracker.ViewModels;
 
 namespace ExpenseTracker.Controllers
 {
-    /// <summary>
+  
     /// Controller responsible for account lifecycle: register, login, logout and access pages.
     /// Methods of interest: `Register`, `Login`, `Logout`, `AccessDenied`, `NotAuthorized`.
     /// Uses `AppDbContext` to persist users, roles and default menu assignments.
-    /// </summary>
+
     public class AccountController : Controller
     {
         private const string DefaultRoleName = "User";

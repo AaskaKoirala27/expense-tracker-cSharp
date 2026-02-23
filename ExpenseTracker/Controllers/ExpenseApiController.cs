@@ -16,10 +16,10 @@ using ExpenseTracker.Models;
 
 namespace ExpenseTracker.Controllers
 {
-    /// <summary>
+
     /// API controller exposing RESTful CRUD operations for `Expense`.
     /// Endpoints: GET all, GET by id, POST create, PUT update, DELETE remove.
-    /// </summary>
+
     [Route("api/[controller]")]
     [ApiController]
     public class ExpenseApiController : ControllerBase

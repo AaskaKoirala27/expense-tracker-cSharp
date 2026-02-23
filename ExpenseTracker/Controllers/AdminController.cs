@@ -24,11 +24,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ExpenseTracker.Controllers
 {
-    /// <summary>
+
     /// Controller used by the superadmin to manage users, roles, menus and view system-wide statistics.
     /// Key actions: Login (superadmin), Index (dashboard), Users, Create/Edit/Delete users,
     /// ManageUserRoles, AssignMenus and SuperAdmin-specific actions like ManageUsers/ActivateUser.
-    /// </summary>
+
     [Authorize(Policy = "SuperAdminOnly")]
     [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class AdminController : Controller

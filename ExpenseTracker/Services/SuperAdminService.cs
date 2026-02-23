@@ -12,10 +12,9 @@ using ExpenseTracker.ViewModels;
 
 namespace ExpenseTracker.Services
 {
-    /// <summary>
+    
     /// Service class that provides operations required by the superadmin UI and workflows.
     /// Intended to be injected where superadmin-level operations are needed (e.g., AdminController).
-    /// </summary>
     public class SuperAdminService
     {
         private readonly AppDbContext _context;

@@ -11,9 +11,7 @@ using ExpenseTracker.ViewModels;
 
 namespace ExpenseTracker.Services
 {
-    /// <summary>
     /// Service that fetches menu items assigned to a specific user and maps them to `MenuItemViewModel`.
-    /// </summary>
     public class MenuService
     {
         private readonly AppDbContext _context;
@@ -23,9 +21,9 @@ namespace ExpenseTracker.Services
             _context = context;
         }
 
-        /// <summary>
+
         /// Returns a list of `MenuItemViewModel` entries for the provided user id.
-        /// </summary>
+
         /// <param name="userId">User id to fetch menus for.</param>
         /// <returns>List of menu items visible to the user.</returns>
         public async Task<List<MenuItemViewModel>> GetMenusForUserAsync(int userId)

@@ -13,10 +13,9 @@ using ExpenseTracker.ViewModels;
 
 namespace ExpenseTracker.Services
 {
-    /// <summary>
+   
     /// Service that creates `DashboardViewModel` instances used by `DashboardController`.
     /// Provides user-scoped and admin-scoped aggregated data for the dashboard.
-    /// </summary>
     public class DashboardService
     {
         private readonly AppDbContext _context;

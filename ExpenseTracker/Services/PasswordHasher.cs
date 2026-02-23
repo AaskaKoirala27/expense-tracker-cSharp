@@ -11,21 +11,18 @@ using System.Security.Cryptography;
 
 namespace ExpenseTracker.Services
 {
-    /// <summary>
     /// Simple static helper for hashing and verifying passwords.
     /// Use `HashPassword` to persist a password and `VerifyPassword` to validate an input password.
-    /// </summary>
-    public static class PasswordHasher
+       public static class PasswordHasher
     {
         private const int SaltSize = 16;
         private const int KeySize = 32;
         private const int Iterations = 100000;
 
-        /// <summary>
+
         /// Hashes a plaintext password using PBKDF2 and returns a concatenated string containing
         /// the iteration count, salt and derived key.
-        /// </summary>
-        /// <param name="password">Plaintext password to hash.</param>
+               /// <param name="password">Plaintext password to hash.</param>
         /// <returns>String containing iterations, salt and key suitable for storage.</returns>
         public static string HashPassword(string password)
         {
@@ -40,10 +37,9 @@ namespace ExpenseTracker.Services
             return string.Join('.', Iterations, Convert.ToBase64String(salt), Convert.ToBase64String(key));
         }
 
-        /// <summary>
+
         /// Verifies a plaintext password against the stored hash produced by <see cref="HashPassword"/>.
-        /// </summary>
-        /// <param name="password">Plaintext password to verify.</param>
+               /// <param name="password">Plaintext password to verify.</param>
         /// <param name="storedHash">Stored hash string in the format produced by <see cref="HashPassword"/>.</param>
         /// <returns>True if the password matches; otherwise false.</returns>
         public static bool VerifyPassword(string password, string storedHash)

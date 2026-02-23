@@ -20,10 +20,10 @@ namespace ExpenseTracker.Controllers;
 
 [Authorize]
 [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
-/// <summary>
+
 /// Handles the application's home page and related public pages.
 /// Main action: `Index` which selects the appropriate view model depending on role (superadmin/admin/user).
-/// </summary>
+
 public class HomeController : Controller
 {
     private readonly HomeSummaryService _summaryService;

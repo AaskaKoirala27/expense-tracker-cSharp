@@ -12,10 +12,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.Services
 {
-    /// <summary>
     /// Helper service that produces aggregated data required for expense graphs and charts.
     /// Methods return `ExpenseGraphViewModel` instances for rendering charts.
-    /// </summary>
+
     public class ExpenseGraphService
     {
         private readonly AppDbContext _context;
