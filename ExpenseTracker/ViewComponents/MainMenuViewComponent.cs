@@ -34,7 +34,7 @@ namespace ExpenseTracker.ViewComponents
             }
 
             var menus = await _menuService.GetMenusForUserAsync(userIdValue.Value);
-            var isSuperAdmin = string.Equals(HttpContext.User.Identity?.Name, "superadmin", StringComparison.OrdinalIgnoreCase);
+            var isSuperAdmin = User.IsInRole("SuperAdmin");
             if (!isSuperAdmin)
             {
                 menus = menus

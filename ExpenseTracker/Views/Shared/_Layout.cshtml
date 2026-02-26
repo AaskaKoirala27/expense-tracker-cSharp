@@ -40,7 +40,7 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if (User.Identity?.IsAuthenticated == true)
                         {
-                            @if (User.Identity?.Name == "superadmin")
+                            @if (User.IsInRole("SuperAdmin"))
                             {
                                 <li class="nav-item">
                                     <a class="nav-link" asp-controller="Admin" asp-action="ManageUsers">

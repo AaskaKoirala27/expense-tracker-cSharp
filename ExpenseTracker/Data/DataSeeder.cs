@@ -16,11 +16,19 @@ namespace ExpenseTracker.Data
                 roles = new List<Role>
                 {
                     new Role { RoleName = "User" },
-                    new Role { RoleName = "Admin" }
+                    new Role { RoleName = "Admin" },
+                    new Role { RoleName = "SuperAdmin" }
                 };
 
                 context.Roles.AddRange(roles);
                 await context.SaveChangesAsync();
+            }
+            else if (!roles.Any(r => r.RoleName == "SuperAdmin"))
+            {
+                var superAdminRole = new Role { RoleName = "SuperAdmin" };
+                context.Roles.Add(superAdminRole);
+                await context.SaveChangesAsync();
+                roles = await context.Roles.ToListAsync();
             }
 
             // Create superadmin user if it doesn't exist
@@ -35,10 +43,11 @@ namespace ExpenseTracker.Data
                 context.Users.Add(superadmin);
                 await context.SaveChangesAsync();
 
-                // Assign superadmin to BOTH Admin and User roles (superadmin has all permissions)
+                // Assign superadmin to User, Admin, and SuperAdmin roles
                 var adminRole = await context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Admin");
                 var userRole = await context.Roles.FirstOrDefaultAsync(r => r.RoleName == "User");
-                
+                var superAdminRole = await context.Roles.FirstOrDefaultAsync(r => r.RoleName == "SuperAdmin");
+
                 if (adminRole != null)
                 {
                     var superadminAdminRoleExists = await context.UserRoles
@@ -65,6 +74,21 @@ namespace ExpenseTracker.Data
                         {
                             UserId = superadmin.Id,
                             RoleId = userRole.Id
+                        });
+                    }
+                }
+
+                if (superAdminRole != null)
+                {
+                    var superadminSuperAdminRoleExists = await context.UserRoles
+                        .AnyAsync(ur => ur.UserId == superadmin.Id && ur.RoleId == superAdminRole.Id);
+
+                    if (!superadminSuperAdminRoleExists)
+                    {
+                        context.UserRoles.Add(new UserRole
+                        {
+                            UserId = superadmin.Id,
+                            RoleId = superAdminRole.Id
                         });
                     }
                 }
@@ -217,6 +241,7 @@ namespace ExpenseTracker.Data
             {
                 var adminRoleForUpdate = await context.Roles.FirstOrDefaultAsync(r => r.RoleName == "Admin");
                 var userRoleForUpdate = await context.Roles.FirstOrDefaultAsync(r => r.RoleName == "User");
+                var superAdminRoleForUpdate = await context.Roles.FirstOrDefaultAsync(r => r.RoleName == "SuperAdmin");
 
                 // Ensure Admin role
                 if (adminRoleForUpdate != null && !existingSuperadmin.UserRoles.Any(ur => ur.RoleId == adminRoleForUpdate.Id))
@@ -235,6 +260,16 @@ namespace ExpenseTracker.Data
                     {
                         UserId = existingSuperadmin.Id,
                         RoleId = userRoleForUpdate.Id
+                    });
+                }
+
+                // Ensure SuperAdmin role
+                if (superAdminRoleForUpdate != null && !existingSuperadmin.UserRoles.Any(ur => ur.RoleId == superAdminRoleForUpdate.Id))
+                {
+                    context.UserRoles.Add(new UserRole
+                    {
+                        UserId = existingSuperadmin.Id,
+                        RoleId = superAdminRoleForUpdate.Id
                     });
                 }
 

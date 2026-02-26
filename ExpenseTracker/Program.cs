@@ -51,14 +51,12 @@ builder.Services.AddAuthorization(options =>
 {
     // Keep a role for legacy 'User' entries
     options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
-    // Allow access when user is in role User OR username is superadmin
+    // Allow access when user is in role User OR SuperAdmin
     options.AddPolicy("UserOrSuperAdmin", policy => policy.RequireAssertion(context =>
-        context.User.IsInRole("User") || string.Equals(context.User.Identity?.Name, "superadmin", StringComparison.OrdinalIgnoreCase)
+        context.User.IsInRole("User") || context.User.IsInRole("SuperAdmin")
     ));
-    // Superadmin-only policy (based on username)
-    options.AddPolicy("SuperAdminOnly", policy => policy.RequireAssertion(context =>
-        string.Equals(context.User.Identity?.Name, "superadmin", StringComparison.OrdinalIgnoreCase)
-    ));
+    // Superadmin-only policy (based on role)
+    options.AddPolicy("SuperAdminOnly", policy => policy.RequireRole("SuperAdmin"));
 });
 
 // Configure the database connection for the application

@@ -25,7 +25,7 @@ namespace ExpenseTracker.Controllers
 
         private bool IsSuperAdmin()
         {
-            return User.Identity?.Name == SUPERADMIN_USERNAME;
+            return User.IsInRole("SuperAdmin");
         }
 
         // Superadmin Login Actions

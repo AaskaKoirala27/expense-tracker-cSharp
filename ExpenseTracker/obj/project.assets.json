@@ -2431,19 +2431,19 @@
     ]
   },
   "packageFolders": {
-    "/Users/aaskakoirala/.nuget/packages/": {}
+    "/home/runner/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/ExpenseTracker.csproj",
+      "projectUniqueName": "/home/runner/work/expense-tracker-cSharp/expense-tracker-cSharp/ExpenseTracker/ExpenseTracker.csproj",
       "projectName": "ExpenseTracker",
-      "projectPath": "/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/ExpenseTracker.csproj",
-      "packagesPath": "/Users/aaskakoirala/.nuget/packages/",
-      "outputPath": "/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/obj/",
+      "projectPath": "/home/runner/work/expense-tracker-cSharp/expense-tracker-cSharp/ExpenseTracker/ExpenseTracker.csproj",
+      "packagesPath": "/home/runner/.nuget/packages/",
+      "outputPath": "/home/runner/work/expense-tracker-cSharp/expense-tracker-cSharp/ExpenseTracker/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/aaskakoirala/.nuget/NuGet/NuGet.Config"
+        "/home/runner/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
@@ -2507,7 +2507,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.101/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/10.0.102/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
@@ -2924,13 +2924,5 @@
         }
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1900",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json."
-    }
-  ]
+  }
 }
