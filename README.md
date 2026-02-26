@@ -190,15 +190,11 @@ ExpenseTracker/
 - **Dashboard**: View spending analytics and charts
 - **Expense Graphs**: Visualize spending patterns over time
 
-### For Admins
+### For Super Admins
 - **User Management**: View and manage all registered users
 - **View All Expenses**: Access expense records from all users
 - **User Activation**: Enable or disable user accounts
 
-### For Super Admin
-- **Full Access**: All User and Admin features
-- **Menu Management**: Configure navigation menus for different roles
-- **Role Assignment**: Assign or modify user roles
 
 ## API Documentation
 
@@ -325,9 +321,9 @@ dotnet ef database update
 Contributions are welcome! Please follow these steps:
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b new`)
+2. Create a feature branch (`git checkout -b feature`)
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin new`)
+4. Push to the branch (`git push origin feature`)
 5. Open a Pull Request
 
 ## License
