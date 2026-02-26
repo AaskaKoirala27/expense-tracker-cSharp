@@ -314,13 +314,9 @@ dotnet ef database update
 
 ## Future Enhancements
 
-- [ ] Export expenses to CSV/Excel
 - [ ] Email notifications for budget limits
-- [ ] Recurring expense tracking
 - [ ] Multi-currency support
-- [ ] Mobile app integration
 - [ ] Budget planning and alerts
-- [ ] Receipt image uploads
 - [ ] Advanced filtering and search
 - [ ] Two-factor authentication
 

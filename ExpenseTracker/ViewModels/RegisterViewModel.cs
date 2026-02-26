@@ -2,6 +2,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ExpenseTracker.ViewModels
 {
+    /// View model used for user registration.
+   
     public class RegisterViewModel
     {
         [Required]

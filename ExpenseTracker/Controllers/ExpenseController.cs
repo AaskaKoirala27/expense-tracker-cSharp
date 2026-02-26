@@ -13,7 +13,7 @@ namespace ExpenseTracker.Controllers
     /// <summary>
     /// Controller responsible for handling all expense-related operations.
     /// Implements full CRUD (Create, Read, Update, Delete) functionality for expense management.
-    /// </summary>
+
     [Authorize(Policy = "UserOrSuperAdmin")]
     [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class ExpenseController : Controller
@@ -22,10 +22,9 @@ namespace ExpenseTracker.Controllers
         private readonly AppDbContext _context;
         private readonly ExpenseGraphService _graphService;
 
-        /// <summary>
         /// Constructor that initializes the controller with the database context.
         /// The context is injected via dependency injection configured in Program.cs.
-        /// </summary>
+    
         /// <param name="context">Database context for expense operations</param>
         /// <param name="graphService">Service for generating expense graph data</param>
         public ExpenseController(AppDbContext context, ExpenseGraphService graphService)
@@ -34,10 +33,10 @@ namespace ExpenseTracker.Controllers
             _graphService = graphService;
         }
 
-        /// <summary>
+
         /// Displays the main dashboard showing all expenses.
         /// GET: Expense/Index
-        /// </summary>
+    
         /// <returns>View with a list of all expenses including summary information</returns>
         public async Task<IActionResult> Index()
         {
@@ -60,12 +59,12 @@ namespace ExpenseTracker.Controllers
             return View(expenses);
         }
 
-        /// <summary>
+ 
         /// Displays an expense graph with custom date filtering.
         /// For regular users: shows their personal expenses
         /// For superadmin: shows system-wide expenses
         /// GET: Expense/Graph
-        /// </summary>
+      
         /// <param name="startDate">Filter start date (optional)</param>
         /// <param name="endDate">Filter end date (optional)</param>
         /// <returns>View with expense graph data</returns>

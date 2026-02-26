@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace ExpenseTracker.ViewModels
 {
+    /// Aggregated information used to render the dashboard page.
+    /// Contains totals, category breakdown and recent entries; admin pages include per-user summaries.
+
     public class DashboardViewModel
     {
         public int TotalExpenses { get; set; }
@@ -19,6 +22,8 @@ namespace ExpenseTracker.ViewModels
         public List<AdminRecentExpenseViewModel> AdminRecentExpenses { get; set; } = new();
     }
 
+    /// Category summary for dashboard (category name, count and total amount).
+
     public class CategorySummaryViewModel
     {
         public string Category { get; set; } = string.Empty;
@@ -27,6 +32,8 @@ namespace ExpenseTracker.ViewModels
 
         public decimal TotalAmount { get; set; }
     }
+
+    /// Recent expense row displayed in summary lists.
 
     public class RecentExpenseViewModel
     {
@@ -40,6 +47,8 @@ namespace ExpenseTracker.ViewModels
 
         public decimal Amount { get; set; }
     }
+
+    /// Per-user aggregation used on admin dashboards.
 
     public class UserExpenseViewModel
     {
@@ -55,6 +64,8 @@ namespace ExpenseTracker.ViewModels
 
         public bool IsSuperAdmin { get; set; }
     }
+
+    /// Admin view of recent expenses including the originating username and flags.
 
     public class AdminRecentExpenseViewModel
     {

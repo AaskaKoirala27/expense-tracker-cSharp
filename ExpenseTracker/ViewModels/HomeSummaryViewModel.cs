@@ -2,6 +2,9 @@ using System.Collections.Generic;
 
 namespace ExpenseTracker.ViewModels
 {
+    /// View model used to render the home/index page summary information.
+    /// Includes total counts, totals, recent expenses and admin-specific fields when applicable.
+   
     public class HomeSummaryViewModel
     {
         public int TotalExpenses { get; set; }

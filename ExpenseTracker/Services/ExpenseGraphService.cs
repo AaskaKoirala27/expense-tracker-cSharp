@@ -1,9 +1,20 @@
+/*
+ * File: Services/ExpenseGraphService.cs
+ * Purpose: Build view-models used by expense graph visualizations, supporting user-scoped and system-wide views.
+ * Responsibilities:
+ *  - Aggregate expenses over time and by category
+ *  - Provide sensible default date ranges and input validation for date filters
+ */
+
 using ExpenseTracker.Data;
 using ExpenseTracker.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace ExpenseTracker.Services
 {
+    /// Helper service that produces aggregated data required for expense graphs and charts.
+    /// Methods return `ExpenseGraphViewModel` instances for rendering charts.
+
     public class ExpenseGraphService
     {
         private readonly AppDbContext _context;

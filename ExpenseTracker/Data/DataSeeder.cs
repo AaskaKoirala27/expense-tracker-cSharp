@@ -1,3 +1,14 @@
+/*
+ * File: Data/DataSeeder.cs
+ * Purpose: Seeds initial application data (roles, superadmin, default menus, user-menu assignments).
+ * Responsibilities:
+ *  - Ensure essential roles (User, Admin) exist
+ *  - Create a default `superadmin` account with both Admin and User roles
+ *  - Seed default menus and assign menus to users based on roles
+ * Notes:
+ *  - Idempotent: checks for existing records to avoid duplicates
+ */
+
 using Microsoft.EntityFrameworkCore;
 using ExpenseTracker.Models;
 using ExpenseTracker.Services;

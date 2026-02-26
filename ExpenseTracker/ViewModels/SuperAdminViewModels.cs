@@ -1,5 +1,7 @@
 namespace ExpenseTracker.ViewModels
 {
+ 
+    /// View model for the superadmin dashboard providing system-wide metrics.
     public class SuperAdminDashboardViewModel
     {
         public int TotalUsers { get; set; }
@@ -7,12 +9,16 @@ namespace ExpenseTracker.ViewModels
         public List<MonthlyExpenseViewModel> MonthlyExpenses { get; set; } = new();
     }
 
+    /// Monthly aggregated expense row used in the superadmin dashboard.
+
     public class MonthlyExpenseViewModel
     {
         public DateTime Month { get; set; }
         public decimal TotalAmount { get; set; }
         public int ExpenseCount { get; set; }
     }
+
+    /// Representation of a user for the superadmin listing page.
 
     public class SuperAdminUserViewModel
     {
@@ -23,6 +29,8 @@ namespace ExpenseTracker.ViewModels
         public int TotalExpenses { get; set; }
         public decimal TotalAmount { get; set; }
     }
+
+    /// Representation of an expense for superadmin listing.
 
     public class SuperAdminExpenseViewModel
     {
