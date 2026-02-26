@@ -85,6 +85,10 @@ namespace ExpenseTracker.Data
                 .HasForeignKey(um => um.UserId);
 
             modelBuilder.Entity<Menu>()
+                .HasIndex(m => m.Title)
+                .IsUnique();
+
+            modelBuilder.Entity<Menu>()
                 .HasMany(m => m.UserMenus)
                 .WithOne(um => um.Menu)
                 .HasForeignKey(um => um.MenuId);

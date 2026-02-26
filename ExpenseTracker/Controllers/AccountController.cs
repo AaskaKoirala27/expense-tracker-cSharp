@@ -190,17 +190,32 @@ namespace ExpenseTracker.Controllers
 
         private async Task EnsureDefaultMenusAsync(int userId)
         {
-            var menus = await _context.Menus.ToListAsync();
-            if (menus.Count == 0)
-            {
-                menus = new List<Menu>
-                {
-                    new Menu { Title = "Add Expense", Url = "/Expense/Create" },
-                    new Menu { Title = "View Expenses", Url = "/Expense/Index" }
-                };
+            List<Menu> menus = new List<Menu>();
 
-                _context.Menus.AddRange(menus);
-                await _context.SaveChangesAsync();
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                menus = await _context.Menus.ToListAsync();
+                if (menus.Count == 0)
+                {
+                    menus = new List<Menu>
+                    {
+                        new Menu { Title = "Add Expense", Url = "/Expense/Create" },
+                        new Menu { Title = "View Expenses", Url = "/Expense/Index" }
+                    };
+
+                    _context.Menus.AddRange(menus);
+                    await _context.SaveChangesAsync();
+                }
+
+                await transaction.CommitAsync();
+            }
+            catch (DbUpdateException)
+            {
+                await transaction.RollbackAsync();
+                // Another concurrent request already inserted the menus; reload from database
+                _context.ChangeTracker.Clear();
+                menus = await _context.Menus.ToListAsync();
             }
 
             var defaultMenuTitles = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
