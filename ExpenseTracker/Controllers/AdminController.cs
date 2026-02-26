@@ -142,14 +142,14 @@ namespace ExpenseTracker.Controllers
             }
 
             ViewBag.IsSuperAdmin = IsSuperAdmin();
-            return View(users);
+            return View("Users/Index", users);
         }
 
         [HttpGet]
         public async Task<IActionResult> CreateUser()
         {
             ViewBag.Roles = await _context.Roles.AsNoTracking().ToListAsync();
-            return View();
+            return View("Users/Create");
         }
 
         [HttpPost]
@@ -165,7 +165,7 @@ namespace ExpenseTracker.Controllers
             }
 
             ViewBag.Roles = await _context.Roles.AsNoTracking().ToListAsync();
-            return View(user);
+            return View("Users/Create", user);
         }
 
         [HttpGet]
@@ -185,7 +185,7 @@ namespace ExpenseTracker.Controllers
             }
 
             ViewBag.Roles = await _context.Roles.AsNoTracking().ToListAsync();
-            return View(user);
+            return View("Users/Edit", user);
         }
 
         [HttpPost]
@@ -217,7 +217,7 @@ namespace ExpenseTracker.Controllers
             }
 
             ViewBag.Roles = await _context.Roles.AsNoTracking().ToListAsync();
-            return View(user);
+            return View("Users/Edit", user);
         }
 
         [HttpGet]
@@ -238,7 +238,7 @@ namespace ExpenseTracker.Controllers
                 return NotFound();
             }
 
-            return View(user);
+            return View("Users/Details", user);
         }
 
         [HttpGet]
@@ -264,7 +264,7 @@ namespace ExpenseTracker.Controllers
                 return RedirectToAction(nameof(Users));
             }
 
-            return View(user);
+            return View("Users/Delete", user);
         }
 
         [HttpPost, ActionName("DeleteUser")]
@@ -323,7 +323,7 @@ namespace ExpenseTracker.Controllers
             ViewBag.IsSuperAdmin = IsSuperAdmin();
             ViewBag.CurrentAdminRole = user.UserRoles.Any(ur => ur.Role?.RoleName == "Admin");
 
-            return View(user);
+            return View("Users/ManageUserRoles", user);
         }
 
         [HttpPost]
@@ -430,13 +430,13 @@ namespace ExpenseTracker.Controllers
         public async Task<IActionResult> Menus()
         {
             var menus = await _context.Menus.AsNoTracking().ToListAsync();
-            return View(menus);
+            return View("Menus/Index", menus);
         }
 
         [HttpGet]
         public IActionResult CreateMenu()
         {
-            return View();
+            return View("Menus/Create");
         }
 
         [HttpPost]
@@ -451,7 +451,7 @@ namespace ExpenseTracker.Controllers
                 return RedirectToAction(nameof(Menus));
             }
 
-            return View(menu);
+            return View("Menus/Create", menu);
         }
 
         [HttpGet]
@@ -468,7 +468,7 @@ namespace ExpenseTracker.Controllers
                 return NotFound();
             }
 
-            return View(menu);
+            return View("Menus/Edit", menu);
         }
 
         [HttpPost]
@@ -499,7 +499,7 @@ namespace ExpenseTracker.Controllers
                 }
             }
 
-            return View(menu);
+            return View("Menus/Edit", menu);
         }
 
         [HttpGet]
@@ -522,7 +522,7 @@ namespace ExpenseTracker.Controllers
                 return NotFound();
             }
 
-            return View(menu);
+            return View("Menus/Details", menu);
         }
 
         [HttpGet]
@@ -539,7 +539,7 @@ namespace ExpenseTracker.Controllers
                 return NotFound();
             }
 
-            return View(menu);
+            return View("Menus/Delete", menu);
         }
 
         [HttpPost, ActionName("DeleteMenu")]
@@ -567,7 +567,7 @@ namespace ExpenseTracker.Controllers
             ViewBag.Roles = roles;
             ViewBag.Menus = menus;
 
-            return View(roles);
+            return View("Menus/AssignMenus", roles);
         }
 
         [HttpPost]

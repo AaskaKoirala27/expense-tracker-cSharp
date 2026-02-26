@@ -91,12 +91,33 @@ namespace ExpenseTracker.Data
             }
 
             // Seed menus with duplicate prevention
-            var existingMenus = await context.Menus.AsNoTracking().ToListAsync();
+            var existingMenus = await context.Menus.ToListAsync();
+            var legacyMenus = existingMenus
+                .Where(m => string.Equals(m.Title, "Dashboard", StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(m.Title, "Expenses", StringComparison.OrdinalIgnoreCase))
+                .ToList();
+
+            if (legacyMenus.Count > 0)
+            {
+                var legacyMenuIds = legacyMenus.Select(m => m.Id).ToList();
+                var legacyAssignments = await context.UserMenus
+                    .Where(um => legacyMenuIds.Contains(um.MenuId))
+                    .ToListAsync();
+
+                if (legacyAssignments.Count > 0)
+                {
+                    context.UserMenus.RemoveRange(legacyAssignments);
+                }
+
+                context.Menus.RemoveRange(legacyMenus);
+                await context.SaveChangesAsync();
+                existingMenus = await context.Menus.ToListAsync();
+            }
+
             var menusToAdd = new List<Menu>();
 
             var defaultMenus = new List<(string Title, string Url)>
             {
-                ("Dashboard", "/Dashboard/Index"),
                 ("Add Expense", "/Expense/Create"),
                 ("View Expenses", "/Expense/Index"),
                 ("Manage Users", "/Admin/Users"),
@@ -123,8 +144,8 @@ namespace ExpenseTracker.Data
 
             var roleMenuMap = new Dictionary<string, string[]>
             {
-                { "User", new[] { "Dashboard", "Add Expense", "View Expenses" } },
-                { "Admin", new[] { "Dashboard", "View Expenses", "Manage Users", "Manage Menus" } }
+                { "User", new[] { "Add Expense", "View Expenses" } },
+                { "Admin", new[] { "Add Expense", "View Expenses", "Manage Users", "Manage Menus" } }
             };
 
             // Seed UserMenus with duplicate prevention

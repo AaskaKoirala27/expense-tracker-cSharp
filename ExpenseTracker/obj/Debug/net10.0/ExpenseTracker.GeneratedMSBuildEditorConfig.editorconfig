@@ -58,10 +58,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vTWFuYWdlVXNlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Menus.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vTWVudXMuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Menus/AssignMenus.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vTWVudXMvQXNzaWduTWVudXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -84,10 +80,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Menus/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vTWVudXMvSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Users.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vVXNlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/aaskakoirala/Documents/expense-tracker-cSharp/ExpenseTracker/Views/Admin/Users/Create.cshtml]

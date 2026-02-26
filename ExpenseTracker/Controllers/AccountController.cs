@@ -195,20 +195,30 @@ namespace ExpenseTracker.Controllers
             {
                 menus = new List<Menu>
                 {
-                    new Menu { Title = "Dashboard", Url = "/Dashboard" },
-                    new Menu { Title = "Expenses", Url = "/Expense" }
+                    new Menu { Title = "Add Expense", Url = "/Expense/Create" },
+                    new Menu { Title = "View Expenses", Url = "/Expense/Index" }
                 };
 
                 _context.Menus.AddRange(menus);
                 await _context.SaveChangesAsync();
             }
 
+            var defaultMenuTitles = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+            {
+                "Add Expense",
+                "View Expenses"
+            };
+
+            var defaultMenus = menus
+                .Where(menu => defaultMenuTitles.Contains(menu.Title))
+                .ToList();
+
             var existingMenuIds = await _context.UserMenus
                 .Where(um => um.UserId == userId)
                 .Select(um => um.MenuId)
                 .ToListAsync();
 
-            var missingMenus = menus
+            var missingMenus = defaultMenus
                 .Where(menu => !existingMenuIds.Contains(menu.Id))
                 .Select(menu => new UserMenu
                 {
