@@ -19,9 +19,11 @@
     @{
         var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
         var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
-        var isAuthPage = string.Equals(currentController, "Account", StringComparison.OrdinalIgnoreCase)
+        var isAuthPage = (string.Equals(currentController, "Account", StringComparison.OrdinalIgnoreCase)
             && (string.Equals(currentAction, "Login", StringComparison.OrdinalIgnoreCase)
-                || string.Equals(currentAction, "Register", StringComparison.OrdinalIgnoreCase));
+                || string.Equals(currentAction, "Register", StringComparison.OrdinalIgnoreCase)))
+            || (string.Equals(currentController, "Admin", StringComparison.OrdinalIgnoreCase)
+                && string.Equals(currentAction, "Login", StringComparison.OrdinalIgnoreCase));
     }
 
     @if (!isAuthPage)
@@ -38,36 +40,42 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if (User.Identity?.IsAuthenticated == true)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Dashboard" asp-action="Index">
-                                    <i class="bi bi-speedometer2"></i> Dashboard
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Expense" asp-action="Create">
-                                    <i class="bi bi-plus-circle"></i> Add Expense
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Expense" asp-action="Index">
-                                    <i class="bi bi-receipt"></i> View Expenses
-                                </a>
-                            </li>
-                        }
-
-                        <!-- Admin role removed: superadmin handles all admin tasks -->
-                        @if (User.Identity?.Name == "superadmin")
-                        {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarSuperAdminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-shield-lock"></i> Superadmin
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarSuperAdminDropdown">
-                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Users"><i class="bi bi-people"></i> Manage Users</a></li>
-                                    <!-- Manage Admins removed: superadmin handles users directly -->
-                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="Index"><i class="bi bi-tools"></i> Admin Portal</a></li>
-                                </ul>
-                            </li>
+                            @if (User.Identity?.Name == "superadmin")
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Admin" asp-action="ManageUsers">
+                                        <i class="bi bi-people"></i> Manage Users
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Admin" asp-action="ViewAllExpenses">
+                                        <i class="bi bi-receipt"></i> View All Expenses
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Expense" asp-action="Graph">
+                                        <i class="bi bi-graph-up"></i> Expense Graph
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Expense" asp-action="Create">
+                                        <i class="bi bi-plus-circle"></i> Add Expense
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Expense" asp-action="Index">
+                                        <i class="bi bi-receipt"></i> View Expenses
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Expense" asp-action="Graph">
+                                        <i class="bi bi-graph-up"></i> Graph
+                                    </a>
+                                </li>
+                            }
                         }
                     </ul>
                     <ul class="navbar-nav">

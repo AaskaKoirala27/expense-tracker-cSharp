@@ -1,0 +1,99 @@
+@model List<ExpenseTracker.ViewModels.SuperAdminExpenseViewModel>
+@{
+    ViewData["Title"] = "View All Expenses";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1><i class="bi bi-receipt"></i> All Expenses</h1>
+            <p class="text-muted">View-only: Monitor all expenses across all users (Read-only mode)</p>
+        </div>
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle"></i> No expenses found in the system.
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-shield-check"></i> <strong>Read-Only Mode:</strong> You can view all expenses but cannot edit or delete them. This page is for monitoring purposes only.
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th><i class="bi bi-person"></i> User</th>
+                        <th><i class="bi bi-calendar"></i> Date</th>
+                        <th><i class="bi bi-tag"></i> Category</th>
+                        <th>Description</th>
+                        <th class="text-end"><i class="bi bi-currency-dollar"></i> Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var expense in Model.OrderByDescending(e => e.Date))
+                    {
+                        <tr>
+                            <td>
+                                <strong>@expense.Username</strong>
+                            </td>
+                            <td>
+                                <small class="text-muted">@expense.Date.ToString("MMM dd, yyyy")</small>
+                            </td>
+                            <td>
+                                <span class="badge bg-info">@expense.Category</span>
+                            </td>
+                            <td>
+                                @expense.Description
+                            </td>
+                            <td class="text-end">
+                                <span class="badge bg-success">NPR @expense.Amount.ToString("N2")</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot class="table-light">
+                    <tr>
+                        <td colspan="4" class="text-end"><strong>Total Expenses:</strong></td>
+                        <td class="text-end">
+                            <strong class="text-success">NPR @Model.Sum(e => e.Amount).ToString("N2")</strong>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
+</div>
+
+@section Styles {
+    <style>
+        h1 {
+            color: #2c3e50;
+            font-weight: 600;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .badge {
+            padding: 6px 12px;
+            font-weight: 500;
+        }
+
+        .table-light {
+            background-color: #f8f9fa;
+        }
+    </style>
+}

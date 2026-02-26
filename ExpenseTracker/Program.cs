@@ -75,6 +75,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<MenuService>();
 builder.Services.AddScoped<DashboardService>();
 builder.Services.AddScoped<HomeSummaryService>();
+builder.Services.AddScoped<SuperAdminService>();
+builder.Services.AddScoped<ExpenseGraphService>();
 
 // Build the application from the configured services
 var app = builder.Build();

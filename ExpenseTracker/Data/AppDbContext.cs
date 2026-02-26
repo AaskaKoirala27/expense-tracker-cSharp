@@ -3,27 +3,27 @@ using ExpenseTracker.Models;
 
 namespace ExpenseTracker.Data
 {
-    /// <summary>
+  
     /// Database context class for the Expense Tracker application.
     /// This class manages the database connection and entity configurations using Entity Framework Core.
     /// It serves as the bridge between the application and the SQLite database.
-    /// </summary>
+  
     public class AppDbContext : DbContext
     {
-        /// <summary>
+ 
         /// Constructor that initializes the DbContext with the provided options.
         /// The options are configured in Program.cs and include the database connection string.
-        /// </summary>
+     
         /// <param name="options">Configuration options for the DbContext, including connection string</param>
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
 
-        /// <summary>
+
         /// DbSet representing the Expenses table in the database.
         /// Provides access to query and save instances of Expense entities.
         /// Used by the controller to perform CRUD operations on expense data.
-        /// </summary>
+       
         public DbSet<Expense> Expenses { get; set; }
 
         public DbSet<User> Users { get; set; }

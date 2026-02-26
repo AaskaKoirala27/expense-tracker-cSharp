@@ -1,9 +1,19 @@
+/*
+ * File: Services/HomeSummaryService.cs
+ * Purpose: Build the `HomeSummaryViewModel` for the application's home/index page.
+ * Responsibilities:
+ *  - Provide total counts, totals and recent expenses for the current user or admin
+ *  - Build monthly aggregates for charts
+ */
+
 using Microsoft.EntityFrameworkCore;
 using ExpenseTracker.Data;
 using ExpenseTracker.ViewModels;
 
 namespace ExpenseTracker.Services
 {
+    
+    /// Service that prepares the home/index summary view model used by `HomeController`.
     public class HomeSummaryService
     {
         private readonly AppDbContext _context;
@@ -50,6 +60,26 @@ namespace ExpenseTracker.Services
                 TotalAmount = totalAmount,
                 RecentExpenses = recentExpenses
             };
+
+            // Get monthly expenses for both user and admin
+            if (!isAdmin && userId.HasValue)
+            {
+                var userMonthlyExpenses = await _context.Expenses
+                    .AsNoTracking()
+                    .Where(e => e.UserId == userId)
+                    .ToListAsync();
+
+                viewModel.MonthlyExpenses = userMonthlyExpenses
+                    .GroupBy(e => new { e.Date.Year, e.Date.Month })
+                    .Select(g => new MonthlyExpenseViewModel
+                    {
+                        Month = new DateTime(g.Key.Year, g.Key.Month, 1),
+                        TotalAmount = g.Sum(e => e.Amount),
+                        ExpenseCount = g.Count()
+                    })
+                    .OrderBy(m => m.Month)
+                    .ToList();
+            }
 
             // Admin-only features
             if (isAdmin)

@@ -1,3 +1,16 @@
+/*
+ * File: Controllers/AdminController.cs
+ * Purpose: Admin portal controller for managing users, roles, menus, and system-wide data.
+ * Responsibilities:
+ *  - Authenticate and authorize the superadmin portal (policy: SuperAdminOnly)
+ *  - Provide CRUD operations for users and menus used by administrators
+ *  - Manage role assignments and menu-to-role assignments
+ *  - Expose SuperAdmin-only operations that call `SuperAdminService` for sensitive tasks
+ * Important notes:
+ *  - Methods are protected with the `SuperAdminOnly` policy where applicable
+ *  - Uses `AppDbContext` for most DB operations and `SuperAdminService` for higher-privilege flows
+ */
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +24,11 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ExpenseTracker.Controllers
 {
+
+    /// Controller used by the superadmin to manage users, roles, menus and view system-wide statistics.
+    /// Key actions: Login (superadmin), Index (dashboard), Users, Create/Edit/Delete users,
+    /// ManageUserRoles, AssignMenus and SuperAdmin-specific actions like ManageUsers/ActivateUser.
+
     [Authorize(Policy = "SuperAdminOnly")]
     [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
     public class AdminController : Controller
@@ -100,7 +118,7 @@ namespace ExpenseTracker.Controllers
             HttpContext.Session.SetInt32("UserId", user.Id);
             HttpContext.Session.SetString("Username", user.Username);
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Home");
         }
 
         // Admin Portal Dashboard
@@ -639,5 +657,88 @@ namespace ExpenseTracker.Controllers
         private bool MenuExists(int id)
         {
             return _context.Menus.Any(e => e.Id == id);
+        }
+
+        // SuperAdmin - Manage Users
+        [Authorize(Policy = "SuperAdminOnly")]
+        [HttpGet]
+        public async Task<IActionResult> ManageUsers()
+        {
+            var superAdminService = HttpContext.RequestServices.GetRequiredService<SuperAdminService>();
+            var users = await superAdminService.GetAllUsersAsync();
+            return View(users);
+        }
+
+        // SuperAdmin - Delete User
+        [Authorize(Policy = "SuperAdminOnly")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteUserSuper(int id)
+        {
+            var superAdminService = HttpContext.RequestServices.GetRequiredService<SuperAdminService>();
+            var result = await superAdminService.DeleteUserAsync(id);
+            
+            if (result)
+            {
+                TempData["SuccessMessage"] = "User deleted successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to delete user.";
+            }
+
+            return RedirectToAction(nameof(ManageUsers));
+        }
+
+        // SuperAdmin - Activate User
+        [Authorize(Policy = "SuperAdminOnly")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ActivateUser(int id)
+        {
+            var superAdminService = HttpContext.RequestServices.GetRequiredService<SuperAdminService>();
+            var result = await superAdminService.ActivateUserAsync(id);
+            
+            if (result)
+            {
+                TempData["SuccessMessage"] = "User activated successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to activate user.";
+            }
+
+            return RedirectToAction(nameof(ManageUsers));
+        }
+
+        // SuperAdmin - Deactivate User
+        [Authorize(Policy = "SuperAdminOnly")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeactivateUser(int id)
+        {
+            var superAdminService = HttpContext.RequestServices.GetRequiredService<SuperAdminService>();
+            var result = await superAdminService.DeactivateUserAsync(id);
+            
+            if (result)
+            {
+                TempData["SuccessMessage"] = "User deactivated successfully.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Failed to deactivate user.";
+            }
+
+            return RedirectToAction(nameof(ManageUsers));
+        }
+
+        // SuperAdmin - View All Expenses
+        [Authorize(Policy = "SuperAdminOnly")]
+        [HttpGet]
+        public async Task<IActionResult> ViewAllExpenses()
+        {
+            var superAdminService = HttpContext.RequestServices.GetRequiredService<SuperAdminService>();
+            var expenses = await superAdminService.GetAllExpensesAsync();
+            return View(expenses);
         }    }
 }

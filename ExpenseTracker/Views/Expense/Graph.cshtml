@@ -1,0 +1,253 @@
+@model ExpenseTracker.ViewModels.ExpenseGraphViewModel
+@{
+    ViewData["Title"] = "Expense Graph";
+    var isSuperAdmin = User.Identity?.Name == "superadmin";
+}
+
+<div class="container-fluid mt-4">
+    @if (isSuperAdmin)
+    {
+        <h1><i class="bi bi-graph-up"></i> System Expense Graph</h1>
+        <p class="text-muted">Visualize total system expenses with custom date filtering</p>
+    }
+    else
+    {
+        <h1><i class="bi bi-graph-up"></i> Expense Graph</h1>
+        <p class="text-muted">Visualize your spending with custom date filtering</p>
+    }
+
+    <!-- Date Filter Section -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-light">
+            <h5 class="mb-0"><i class="bi bi-calendar"></i> Filter by Date Range</h5>
+        </div>
+        <div class="card-body">
+            <form method="get" asp-action="Graph" class="row g-3">
+                <div class="col-md-4">
+                    <label for="startDate" class="form-label">Start Date</label>
+                    <input type="date" id="startDate" name="startDate" class="form-control" value="@Model.StartDate.ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    @if (ViewData.ModelState.ContainsKey("startDate") && ViewData.ModelState["startDate"].Errors.Count > 0)
+                    {
+                        <span class="text-danger small">@ViewData.ModelState["startDate"].Errors[0].ErrorMessage</span>
+                    }
+                </div>
+
+                <div class="col-md-4">
+                    <label for="endDate" class="form-label">End Date</label>
+                    <input type="date" id="endDate" name="endDate" class="form-control" value="@Model.EndDate.ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                    @if (ViewData.ModelState.ContainsKey("endDate") && ViewData.ModelState["endDate"].Errors.Count > 0)
+                    {
+                        <span class="text-danger small">@ViewData.ModelState["endDate"].Errors[0].ErrorMessage</span>
+                    }
+                </div>
+
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search"></i> Filter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Summary Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Total Spent</h6>
+                    <p class="display-6 mb-0 text-success">NPR @Model.TotalAmount.ToString("N2")</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Total Transactions</h6>
+                    <p class="display-6 mb-0 text-info">@Model.TotalCount</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Days in Range</h6>
+                    <p class="display-6 mb-0 text-warning">@((Model.EndDate.Date - Model.StartDate.Date).Days + 1)</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h6 class="card-title text-muted">Avg Daily</h6>
+                    <p class="display-6 mb-0 text-primary">NPR @Model.AverageDaily.ToString("N2")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Daily Expenses Chart -->
+    <div class="row mb-4">
+        <div class="col-lg-12">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0"><i class="bi bi-graph-up"></i> Expenses Breakdown</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.DailyExpenses.Count == 0)
+                    {
+                        <div class="alert alert-info" role="alert">
+                            <i class="bi bi-info-circle"></i> No expenses found in the selected date range.
+                        </div>
+                    }
+                    else
+                    {
+                        <canvas id="dailyChart" style="min-height: 400px; max-height: 400px;"></canvas>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Breakdown Chart -->
+    @if (Model.CategoryExpenses.Count > 0)
+    {
+        <div class="row mb-4">
+            <div class="col-lg-12">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="bi bi-bar-chart"></i> Spending by Category</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="categoryChart" style="min-height: 400px; max-height: 400px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Daily Expenses Chart
+            @if (Model.DailyExpenses.Count > 0)
+            {
+                var dailyDates = Model.DailyExpenses.Select(d => d.Date.ToString("MMM dd")).ToList();
+                var dailyAmounts = Model.DailyExpenses.Select(d => d.Amount).ToList();
+
+                <text>
+                try {
+                    const dailyCtx = document.getElementById('dailyChart');
+                    if (dailyCtx && typeof Chart !== 'undefined') {
+                        new Chart(dailyCtx, {
+                            type: 'line',
+                            data: {
+                                labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(dailyDates)),
+                                datasets: [{
+                                    label: 'Daily Expenses (NPR)',
+                                    data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(dailyAmounts)),
+                                    borderColor: '#667eea',
+                                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                                    borderWidth: 3,
+                                    fill: true,
+                                    tension: 0.4,
+                                    pointRadius: 5,
+                                    pointBackgroundColor: '#667eea',
+                                    pointBorderColor: '#fff',
+                                    pointBorderWidth: 2
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        display: true,
+                                        labels: { font: { size: 12, weight: 'bold' } }
+                                    }
+                                },
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        ticks: {
+                                            callback: function(value) {
+                                                return 'NPR ' + value.toLocaleString();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.error('Error creating daily chart:', e);
+                }
+                </text>
+            }
+
+            // Category Chart
+            @if (Model.CategoryExpenses.Count > 0)
+            {
+                var categories = Model.CategoryExpenses.Select(c => c.Category).ToList();
+                var categoryAmounts = Model.CategoryExpenses.Select(c => c.Amount).ToList();
+                var categoryCount = categories.Count;
+
+                <text>
+                try {
+                    const categoryCtx = document.getElementById('categoryChart');
+                    if (categoryCtx && typeof Chart !== 'undefined') {
+                        const colors = ['#667eea', '#764ba2', '#ed64a6', '#ff9a9e', '#fad0c4', '#ffecd2', '#f093fb', '#4facfe'];
+                        new Chart(categoryCtx, {
+                            type: 'bar',
+                            data: {
+                                labels: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(categories)),
+                                datasets: [{
+                                    label: 'Spending by Category',
+                                    data: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(categoryAmounts)),
+                                    backgroundColor: colors.slice(0, @categoryCount),
+                                    borderColor: colors.slice(0, @categoryCount),
+                                    borderWidth: 1,
+                                    borderRadius: 4
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        display: false
+                                    }
+                                },
+                                scales: {
+                                    x: {
+                                        title: {
+                                            display: true,
+                                            text: 'Category'
+                                        }
+                                    },
+                                    y: {
+                                        beginAtZero: true,
+                                        title: {
+                                            display: true,
+                                            text: 'Amount (₹)'
+                                        },
+                                        ticks: {
+                                            callback: function(value) {
+                                                return 'NPR ' + value.toLocaleString();
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                } catch (e) {
+                    console.error('Error creating category chart:', e);
+                }
+                </text>
+            }
+        });
+    </script>
+}

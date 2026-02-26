@@ -1,3 +1,16 @@
+/*
+ * File: Controllers/AccountController.cs
+ * Purpose: Handles user registration, authentication (login), logout, and related access pages.
+ * Responsibilities:
+ *  - Register new users, assign default roles and default menus
+ *  - Authenticate users and create cookie-based claims principals
+ *  - Maintain session keys (`UserId`, `Username`) after successful login
+ *  - Provide access pages for denied/unauthorized scenarios
+ * Important notes:
+ *  - Superadmin account is restricted from regular login flow and must use the admin portal
+ *  - All database interactions use `AppDbContext` injected through constructor
+ */
+
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -11,6 +24,11 @@ using ExpenseTracker.ViewModels;
 
 namespace ExpenseTracker.Controllers
 {
+  
+    /// Controller responsible for account lifecycle: register, login, logout and access pages.
+    /// Methods of interest: `Register`, `Login`, `Logout`, `AccessDenied`, `NotAuthorized`.
+    /// Uses `AppDbContext` to persist users, roles and default menu assignments.
+
     public class AccountController : Controller
     {
         private const string DefaultRoleName = "User";
@@ -26,7 +44,7 @@ namespace ExpenseTracker.Controllers
         {
             if (User.Identity?.IsAuthenticated == true)
             {
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "Home");
             }
 
             return View(new RegisterViewModel());
@@ -79,7 +97,7 @@ namespace ExpenseTracker.Controllers
         {
             if (User.Identity?.IsAuthenticated == true)
             {
-                return RedirectToAction("Index", "Dashboard");
+                return RedirectToAction("Index", "Home");
             }
 
             return View(new LoginViewModel());
@@ -102,6 +120,13 @@ namespace ExpenseTracker.Controllers
             if (user == null || !PasswordHasher.VerifyPassword(model.Password, user.PasswordHash))
             {
                 ModelState.AddModelError(string.Empty, "Invalid username or password.");
+                return View(model);
+            }
+
+            // Check if account is deactivated
+            if (!user.IsActive)
+            {
+                ModelState.AddModelError(string.Empty, "Your account is deactivated for the time being.");
                 return View(model);
             }
 
@@ -137,7 +162,7 @@ namespace ExpenseTracker.Controllers
             HttpContext.Session.SetInt32("UserId", user.Id);
             HttpContext.Session.SetString("Username", user.Username);
 
-            return RedirectToAction("Index", "Dashboard");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
