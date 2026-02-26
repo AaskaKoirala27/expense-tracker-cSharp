@@ -39,3 +39,20 @@
 
 # debug information files
 *.dwo
+
+# =========================
+# .NET / ASP.NET Core
+# =========================
+bin/
+obj/
+.vs/
+
+# Rider / VS Code
+.idea/
+.vscode/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
